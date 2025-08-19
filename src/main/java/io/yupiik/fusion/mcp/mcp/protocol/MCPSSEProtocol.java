@@ -1,0 +1,43 @@
+/*
+ * Copyright (c) 2025 - present - Yupiik SAS - https://www.yupiik.com
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+package io.yupiik.fusion.mcp.mcp.protocol;
+
+import io.yupiik.fusion.framework.api.scope.ApplicationScoped;
+import io.yupiik.fusion.framework.build.api.http.HttpMatcher;
+import io.yupiik.fusion.http.server.api.Request;
+import io.yupiik.fusion.http.server.api.Response;
+import jakarta.servlet.http.HttpServletRequest;
+
+import java.nio.ByteBuffer;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.Flow;
+
+import static java.util.concurrent.CompletableFuture.completedFuture;
+
+@ApplicationScoped
+public class MCPSSEProtocol {
+    @HttpMatcher(methods = "GET", path = "/mcp")
+    public CompletionStage<Response> sse(final Request request) {
+        request.unwrap(HttpServletRequest.class).getAsyncContext().setTimeout(Long.MAX_VALUE);
+        return completedFuture(Response.of()
+                .status(200)
+                .header("content-type", "text/event-stream")
+                .body((Flow.Publisher<ByteBuffer>) subscriber -> {
+                    // for now we do not do anything since we do not emit anything and request will just be closed by the client
+                })
+                .build());
+    }
+}
