@@ -13,7 +13,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.model.demo;
+package io.yupiik.fusion.mcp.model.demo;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
 

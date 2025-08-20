@@ -13,11 +13,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.service;
+package io.yupiik.fusion.mcp.service;
 
-import io.yupiik.fusion.model.fusion.OpenRpc;
 import io.yupiik.fusion.framework.api.scope.ApplicationScoped;
 import io.yupiik.fusion.json.JsonMapper;
+import io.yupiik.fusion.mcp.model.fusion.OpenRpc;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

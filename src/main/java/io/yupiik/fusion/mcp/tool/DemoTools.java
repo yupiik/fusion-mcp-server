@@ -13,16 +13,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.tool;
+package io.yupiik.fusion.mcp.tool;
 
+import io.yupiik.fusion.framework.api.scope.ApplicationScoped;
+import io.yupiik.fusion.framework.build.api.jsonrpc.JsonRpc;
+import io.yupiik.fusion.framework.build.api.jsonrpc.JsonRpcParam;
 import io.yupiik.fusion.mcp.api.MCPPrompt;
 import io.yupiik.fusion.mcp.api.MCPTool;
 import io.yupiik.fusion.mcp.model.PromptResponse;
 import io.yupiik.fusion.mcp.model.Role;
-import io.yupiik.fusion.tool.model.Demo;
-import io.yupiik.fusion.framework.api.scope.ApplicationScoped;
-import io.yupiik.fusion.framework.build.api.jsonrpc.JsonRpc;
-import io.yupiik.fusion.framework.build.api.jsonrpc.JsonRpcParam;
+import io.yupiik.fusion.mcp.tool.model.Demo;
 
 import java.util.List;
 

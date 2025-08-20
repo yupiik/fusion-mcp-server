@@ -15,6 +15,15 @@
  */
 package io.yupiik.fusion.mcp.protocol;
 
+import io.yupiik.fusion.framework.api.scope.ApplicationScoped;
+import io.yupiik.fusion.framework.build.api.jsonrpc.JsonRpc;
+import io.yupiik.fusion.framework.build.api.jsonrpc.JsonRpcParam;
+import io.yupiik.fusion.http.server.api.Request;
+import io.yupiik.fusion.json.JsonMapper;
+import io.yupiik.fusion.jsonrpc.JsonRpcException;
+import io.yupiik.fusion.jsonrpc.JsonRpcHandler;
+import io.yupiik.fusion.jsonrpc.JsonRpcRegistry;
+import io.yupiik.fusion.jsonrpc.Response;
 import io.yupiik.fusion.mcp.model.Capabilities;
 import io.yupiik.fusion.mcp.model.ClientInfo;
 import io.yupiik.fusion.mcp.model.CompleteResult;
@@ -31,17 +40,8 @@ import io.yupiik.fusion.mcp.model.Metadata;
 import io.yupiik.fusion.mcp.model.PromptResponse;
 import io.yupiik.fusion.mcp.model.ReadResourceResponse;
 import io.yupiik.fusion.mcp.model.ToolResponse;
-import io.yupiik.fusion.model.fusion.OpenRpc;
-import io.yupiik.fusion.service.OpenRpcService;
-import io.yupiik.fusion.framework.api.scope.ApplicationScoped;
-import io.yupiik.fusion.framework.build.api.jsonrpc.JsonRpc;
-import io.yupiik.fusion.framework.build.api.jsonrpc.JsonRpcParam;
-import io.yupiik.fusion.http.server.api.Request;
-import io.yupiik.fusion.json.JsonMapper;
-import io.yupiik.fusion.jsonrpc.JsonRpcException;
-import io.yupiik.fusion.jsonrpc.JsonRpcHandler;
-import io.yupiik.fusion.jsonrpc.JsonRpcRegistry;
-import io.yupiik.fusion.jsonrpc.Response;
+import io.yupiik.fusion.mcp.model.fusion.OpenRpc;
+import io.yupiik.fusion.mcp.service.OpenRpcService;
 
 import java.util.List;
 import java.util.Map;
