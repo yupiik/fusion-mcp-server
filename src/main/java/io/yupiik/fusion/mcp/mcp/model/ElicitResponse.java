@@ -18,17 +18,16 @@ package io.yupiik.fusion.mcp.demo.mcp.model;
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
 import io.yupiik.fusion.framework.build.api.json.JsonProperty;
 
-import java.util.List;
+import java.util.Map;
 
 @JsonModel
-public record PromptResponse(
+public record ElicitResponse(
         @JsonProperty("_meta") Metadata metadata,
-        String description,
-        List<Message> messages
+        Action action,
+        Map<String, Object> content
 ) {
     @JsonModel
-    public record Message(
-            Role role,
-            Content content
-    ) {}
+    public enum Action {
+        accept, cancel, decline
+    }
 }

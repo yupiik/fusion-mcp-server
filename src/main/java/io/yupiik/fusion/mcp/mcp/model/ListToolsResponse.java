@@ -13,9 +13,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.mcp.mcp.model;
+package io.yupiik.fusion.mcp.demo.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
+import io.yupiik.fusion.framework.build.api.json.JsonProperty;
 
 import java.util.List;
 
@@ -26,6 +27,9 @@ public record ListToolsResponse(
 ) {
     @JsonModel
     public record Tool(
+            @JsonProperty("_meta") Metadata metadata,
+            Annotations annotations,
+            String title,
             String name,
             String description,
             JsonSchema inputSchema,

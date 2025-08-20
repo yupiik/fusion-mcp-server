@@ -13,7 +13,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.mcp.mcp.api;
+package io.yupiik.fusion.mcp.demo.mcp.api;
 
 import io.yupiik.fusion.framework.build.api.metadata.BeanMetadataAlias;
 

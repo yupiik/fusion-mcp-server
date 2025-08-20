@@ -21,14 +21,8 @@ import io.yupiik.fusion.framework.build.api.json.JsonProperty;
 import java.util.List;
 
 @JsonModel
-public record PromptResponse(
+public record ReadResourceResponse(
         @JsonProperty("_meta") Metadata metadata,
-        String description,
-        List<Message> messages
+        List<Resource> contents
 ) {
-    @JsonModel
-    public record Message(
-            Role role,
-            Content content
-    ) {}
 }

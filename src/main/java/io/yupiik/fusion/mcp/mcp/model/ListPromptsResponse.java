@@ -13,9 +13,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.mcp.mcp.model;
+package io.yupiik.fusion.mcp.demo.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
+import io.yupiik.fusion.framework.build.api.json.JsonProperty;
 
 import java.util.List;
 
@@ -26,12 +27,15 @@ public record ListPromptsResponse(
 ) {
     @JsonModel
     public record Prompt(
+            @JsonProperty("_meta") Metadata metadata,
+            String title,
             String name,
             String description,
             List<Argument> arguments
     ) {
         @JsonModel
         public record Argument(
+                String title,
                 String name,
                 String description,
                 Boolean required

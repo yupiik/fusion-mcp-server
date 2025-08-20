@@ -16,19 +16,14 @@
 package io.yupiik.fusion.mcp.demo.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
-import io.yupiik.fusion.framework.build.api.json.JsonProperty;
+import io.yupiik.fusion.framework.build.api.json.JsonOthers;
 
-import java.util.List;
+import java.util.Map;
 
 @JsonModel
-public record PromptResponse(
-        @JsonProperty("_meta") Metadata metadata,
-        String description,
-        List<Message> messages
+public record Metadata(
+        String name,
+        String title,
+        @JsonOthers Map<String, Object> others
 ) {
-    @JsonModel
-    public record Message(
-            Role role,
-            Content content
-    ) {}
 }

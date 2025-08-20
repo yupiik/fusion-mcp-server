@@ -13,18 +13,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.mcp.mcp.protocol;
+package io.yupiik.fusion.mcp.demo.mcp.protocol;
 
-import io.yupiik.fusion.mcp.mcp.model.Capabilities;
-import io.yupiik.fusion.mcp.mcp.model.ClientInfo;
-import io.yupiik.fusion.mcp.mcp.model.InitializeResponse;
-import io.yupiik.fusion.mcp.mcp.model.JsonSchema;
-import io.yupiik.fusion.mcp.mcp.model.ListPromptsResponse;
-import io.yupiik.fusion.mcp.mcp.model.ListToolsResponse;
-import io.yupiik.fusion.mcp.mcp.model.PromptResponse;
-import io.yupiik.fusion.mcp.mcp.model.ToolResponse;
-import io.yupiik.fusion.mcp.model.fusion.OpenRpc;
-import io.yupiik.fusion.mcp.service.OpenRpcService;
+import io.yupiik.fusion.mcp.demo.mcp.model.Capabilities;
+import io.yupiik.fusion.mcp.demo.mcp.model.ClientInfo;
+import io.yupiik.fusion.mcp.demo.mcp.model.CompleteResult;
+import io.yupiik.fusion.mcp.demo.mcp.model.CompletionArgument;
+import io.yupiik.fusion.mcp.demo.mcp.model.CompletionContext;
+import io.yupiik.fusion.mcp.demo.mcp.model.CompletionRef;
+import io.yupiik.fusion.mcp.demo.mcp.model.InitializeResponse;
+import io.yupiik.fusion.mcp.demo.mcp.model.JsonSchema;
+import io.yupiik.fusion.mcp.demo.mcp.model.ListPromptsResponse;
+import io.yupiik.fusion.mcp.demo.mcp.model.ListResourcesResponse;
+import io.yupiik.fusion.mcp.demo.mcp.model.ListToolsResponse;
+import io.yupiik.fusion.mcp.demo.mcp.model.LoggingLevel;
+import io.yupiik.fusion.mcp.demo.mcp.model.Metadata;
+import io.yupiik.fusion.mcp.demo.mcp.model.PromptResponse;
+import io.yupiik.fusion.mcp.demo.mcp.model.ReadResourceResponse;
+import io.yupiik.fusion.mcp.demo.mcp.model.ToolResponse;
+import io.yupiik.fusion.mcp.demo.model.fusion.OpenRpc;
+import io.yupiik.fusion.mcp.demo.service.OpenRpcService;
 import io.yupiik.fusion.framework.api.scope.ApplicationScoped;
 import io.yupiik.fusion.framework.build.api.jsonrpc.JsonRpc;
 import io.yupiik.fusion.framework.build.api.jsonrpc.JsonRpcParam;
@@ -72,6 +80,9 @@ public class MCPJSONRPCProtocol {
         this.tools = new ListToolsResponse(openrpc.methods().values().stream()
                 .filter(it -> "tool".equals(registry.methods().get(it.name()).metadata().getOrDefault("mcp.type", "")))
                 .map(it -> new ListToolsResponse.Tool(
+                        null,
+                        null,
+                        it.name(),
                         it.name(),
                         it.description(),
                         new JsonSchema(
@@ -98,12 +109,14 @@ public class MCPJSONRPCProtocol {
         this.prompts = new ListPromptsResponse(openrpc.methods().values().stream()
                 .filter(it -> "prompt".equals(registry.methods().get(it.name()).metadata().getOrDefault("mcp.type", "")))
                 .map(it -> new ListPromptsResponse.Prompt(
+                        null,
+                        it.name(),
                         it.name(),
                         it.description(),
                         // there params are only strings!
                         it.params().stream()
                                 .map(p -> new ListPromptsResponse.Prompt.Argument(
-                                        p.name(),
+                                        p.name(), p.name(),
                                         p.schema().description(),
                                         p.schema().nullable() != null && !p.schema().nullable()
                                 ))
@@ -115,10 +128,12 @@ public class MCPJSONRPCProtocol {
         initializeResponse = new InitializeResponse(
                 "2025-06-18",
                 new InitializeResponse.Capabilities(
-                        null,
+                        null, // todo
                         prompts.prompts().isEmpty() ? null : new InitializeResponse.Prompts(false),
-                        null,
-                        tools.tools().isEmpty() ? null : new InitializeResponse.Tools(false)),
+                        null, // todo: enable user to expose resources
+                        tools.tools().isEmpty() ? null : new InitializeResponse.Tools(false),
+                        null, // todo
+                        null),
                 new InitializeResponse.ServerInfo("fusion-demo", "Fusion Demo", "1.0.0"),
                 "Use demo tool");
     }
@@ -143,22 +158,53 @@ public class MCPJSONRPCProtocol {
     }
 
     @JsonRpc("notifications/initialized")
-    public void initialized() {
-        // no-op
+    public void onInitialize(@JsonRpcParam("_meta") final Metadata metadata, final Request request) {
+        MCPSession.Accessor.create(request);
     }
 
-    // https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/cancellation
     @JsonRpc("notifications/cancelled")
-    public void cancel(
-            @JsonRpcParam final String requestId,
-            @JsonRpcParam final String reason
+    public void onCancelled(@JsonRpcParam final String reason,
+                            @JsonRpcParam final String requestId,
+                            final Request request) {
+        final var sse = MCPSession.Accessor.get(request).sse();
+        if (sse != null) {
+            sse.cancel();
+        }
+    }
+
+    @JsonRpc("notifications/progress")
+    public void onProgress(
+            @JsonRpcParam final String message,
+            @JsonRpcParam final Double progress,
+            @JsonRpcParam final Object progressToken, // int or string
+            @JsonRpcParam final Double total
     ) {
         // no-op
     }
 
+    @JsonRpc("notifications/roots/list_changed")
+    public void onRootsListChanged(@JsonRpcParam("_meta") final Metadata metadata) {
+        // no-op
+    }
+
+    @JsonRpc("completion/complete")
+    public CompleteResult completion(@JsonRpcParam final CompletionArgument argument,
+                                     @JsonRpcParam final CompletionContext context,
+                                     @JsonRpcParam final CompletionRef ref) {
+        // todo
+        return new CompleteResult(null, new CompleteResult.Completion(false, 0, List.of()));
+    }
+
+    @JsonRpc("logging/setLevel")
+    public void setLoggingLevel(@JsonRpcParam final String level, final Request request) {
+        if (initializeResponse.capabilities().logging() != null) {
+            MCPSession.Accessor.get(request).setLoggingLevel(LoggingLevel.valueOf(level));
+        }
+    }
+
     // https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/ping
     @JsonRpc("ping")
-    public Map<String, String> ping() {
+    public Map<String, String> ping(@JsonRpcParam("_meta") final Metadata metadata) {
         return Map.of();
     }
 
@@ -166,6 +212,39 @@ public class MCPJSONRPCProtocol {
     public ListToolsResponse listTools(
             @JsonRpcParam final String cursor) {
         return tools;
+    }
+
+    @JsonRpc("resources/list")
+    public ListResourcesResponse listResources(
+            @JsonRpcParam final String cursor) {
+        // todo: expose it with a SPI or just let the user define the jsonrpc method if needed?
+        return new ListResourcesResponse(List.of(), null);
+    }
+
+    @JsonRpc("resources/read")
+    public ReadResourceResponse readResource(
+            @JsonRpcParam final String uri) {
+        // todo: expose it with a SPI or just let the user define the jsonrpc method if needed?
+        return new ReadResourceResponse(null, List.of());
+    }
+
+    @JsonRpc("resources/subscribe")
+    public void subscribeResource(
+            @JsonRpcParam final String uri) {
+        // no-op: todo
+    }
+
+    @JsonRpc("resources/unsubscribe")
+    public void unsubscribeResource(
+            @JsonRpcParam final String uri) {
+        // no-op: todo
+    }
+
+    @JsonRpc("resources/templates/list")
+    public ListResourcesResponse listResourceTemplates(
+            @JsonRpcParam final String cursor) {
+        // todo: expose it with a SPI or just let the user define the jsonrpc method if needed?
+        return new ListResourcesResponse(List.of(), null);
     }
 
     @JsonRpc("prompts/list")
@@ -213,6 +292,37 @@ public class MCPJSONRPCProtocol {
                 });
     }
 
+    /* server -> client (SSE channel)
+    @JsonRpc("notifications/resources/list_changed")
+    public void onResourcesListChanged(@JsonRpcParam("_meta") final Metadata metadata) {
+        // no-op
+    }
+
+    @JsonRpc("notifications/resources/updated")
+    public void onResourcesUpdated(@JsonRpcParam final String uri) {
+        // no-op
+    }
+
+    @JsonRpc("notifications/prompts/list_changed")
+    public void onPromptsListChanged(@JsonRpcParam("_meta") final Metadata metadata) {
+        // no-op
+    }
+
+    @JsonRpc("notifications/tools/list_changed")
+    public void onToolsUpdated(@JsonRpcParam("_meta") final Metadata uri) {
+        // no-op
+    }
+
+    @JsonRpc("notifications/messages")
+    public void onMessage(@JsonRpcParam final String logger,
+                          @JsonRpcParam final LoggingLevel level,
+                          // can be string or not
+                          @JsonRpcParam final Object data,
+                          final Request request) {
+        // no-op
+    }
+    */
+
     private <T> T onError(final Object res) {
         if (res instanceof Response r && r.error() != null) {
             throw new JsonRpcException(r.error().code(), r.error().message(), r.error().message(), null);
@@ -227,7 +337,7 @@ public class MCPJSONRPCProtocol {
             return null;
         }
         return new JsonSchema(
-                schema.type(), schema.nullable(), schema.description(), schema.format(), schema.pattern(),
+                schema.type(), schema.nullable(), null, schema.description(), schema.format(), schema.pattern(),
                 schema.properties() == null ? null : schema.properties().entrySet().stream()
                         .collect(toMap(Map.Entry::getKey, it -> toMcpSchema(it.getValue()))),
                 schema.additionalProperties() instanceof Map<?, ?> ?
@@ -240,13 +350,7 @@ public class MCPJSONRPCProtocol {
                                 .entrySet().stream()
                                 .filter(it -> it.getValue().nullable() != null && !it.getValue().nullable())
                                 .map(Map.Entry::getKey)
-                                .toList());
-    }
-
-    private boolean isMcp(final String key) {
-        return key.startsWith("tools/") ||
-                key.startsWith("notifications/") ||
-                "initialize".equals(key) ||
-                "ping".equals(key);
+                                .toList(),
+                null);
     }
 }

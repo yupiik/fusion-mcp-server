@@ -13,9 +13,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.mcp.service;
+package io.yupiik.fusion.mcp.demo.service;
 
-import io.yupiik.fusion.mcp.model.fusion.OpenRpc;
+import io.yupiik.fusion.mcp.demo.model.fusion.OpenRpc;
 import io.yupiik.fusion.framework.api.scope.ApplicationScoped;
 import io.yupiik.fusion.json.JsonMapper;
 

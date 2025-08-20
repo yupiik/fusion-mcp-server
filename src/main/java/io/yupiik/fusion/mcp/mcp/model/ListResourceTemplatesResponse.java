@@ -17,18 +17,23 @@ package io.yupiik.fusion.mcp.demo.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
 import io.yupiik.fusion.framework.build.api.json.JsonProperty;
+import io.yupiik.fusion.framework.build.api.jsonrpc.JsonRpcParam;
 
 import java.util.List;
 
 @JsonModel
-public record PromptResponse(
-        @JsonProperty("_meta") Metadata metadata,
-        String description,
-        List<Message> messages
+public record ListResourceTemplatesResponse(
+        List<ResourceTemplate> resources,
+        String nextCursor
 ) {
     @JsonModel
-    public record Message(
-            Role role,
-            Content content
+    public record ResourceTemplate(
+            @JsonProperty("_meta") Metadata metadata,
+            Annotations annotations,
+            String description,
+            String mimeType,
+            String name,
+            String title,
+            String uriTemplate
     ) {}
 }

@@ -16,19 +16,20 @@
 package io.yupiik.fusion.mcp.demo.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
-import io.yupiik.fusion.framework.build.api.json.JsonProperty;
 
 import java.util.List;
+import java.util.Map;
 
+// sampling/createMessage params
 @JsonModel
-public record PromptResponse(
-        @JsonProperty("_meta") Metadata metadata,
-        String description,
-        List<Message> messages
+public record CreateSamplingMessageParameters(
+        SamplingServer includeContext,
+        Integer maxTokens,
+        List<SamplingMessage> messages,
+        Map<String, Object> metadata,
+        ModelPreferences modelPreferences,
+        List<String> stopSequences,
+        String systemPrompt,
+        Double temperature
 ) {
-    @JsonModel
-    public record Message(
-            Role role,
-            Content content
-    ) {}
 }

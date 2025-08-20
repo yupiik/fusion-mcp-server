@@ -14,7 +14,7 @@
  * under the License.
  */
 
-package io.yupiik.fusion.mcp.mcp.model;
+package io.yupiik.fusion.mcp.demo.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
 

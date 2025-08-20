@@ -16,19 +16,22 @@
 package io.yupiik.fusion.mcp.demo.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
-import io.yupiik.fusion.framework.build.api.json.JsonProperty;
 
 import java.util.List;
 
 @JsonModel
-public record PromptResponse(
-        @JsonProperty("_meta") Metadata metadata,
-        String description,
-        List<Message> messages
+public record ModelPreferences(
+        Integer costPriority,
+        List<ModelHint> hints,
+        Integer intelligencePriority,
+        Integer speedPriority
 ) {
-    @JsonModel
-    public record Message(
-            Role role,
-            Content content
-    ) {}
+    public static final int NOT_IMPORTANT_COST = 0;
+    public static final int MOST_IMPORTANT_COST = 1;
+
+    public static final int NOT_IMPORTANT_INTELLIGENCE = 0;
+    public static final int MOST_IMPORTANT_INTELLIGENCE = 1;
+
+    public static final int NOT_IMPORTANT_SPEED = 0;
+    public static final int MOST_IMPORTANT_SPEED = 1;
 }
