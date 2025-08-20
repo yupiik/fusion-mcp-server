@@ -13,9 +13,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.mcp.mcp.model;
+package io.yupiik.fusion.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
+
+import java.util.Map;
 
 @JsonModel
 public record InitializeResponse(
@@ -26,15 +28,13 @@ public record InitializeResponse(
 ) {
     @JsonModel
     public record Capabilities(
-            Logging logging,
+            Map<String, Object> logging,
             Prompts prompts,
             Resources resources,
-            Tools tools
+            Tools tools,
+            Map<String, Object> completions,
+            Map<String, Object> experimental
     ) {
-    }
-
-    @JsonModel
-    public record Logging() {
     }
 
     @JsonModel

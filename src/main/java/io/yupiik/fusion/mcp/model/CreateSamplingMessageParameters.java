@@ -13,20 +13,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.mcp.mcp.model;
+package io.yupiik.fusion.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
-import io.yupiik.fusion.json.JsonMapper;
 
 import java.util.List;
+import java.util.Map;
 
+// sampling/createMessage params
 @JsonModel
-public record ToolResponse(
-        boolean isError,
-        List<Content> content,
-        Object structuredContent
+public record CreateSamplingMessageParameters(
+        SamplingServer includeContext,
+        Integer maxTokens,
+        List<SamplingMessage> messages,
+        Map<String, Object> metadata,
+        ModelPreferences modelPreferences,
+        List<String> stopSequences,
+        String systemPrompt,
+        Double temperature
 ) {
-    public static ToolResponse structure(final JsonMapper jsonMapper, final Object data) {
-        return new ToolResponse(false, List.of(Content.text(jsonMapper.toString(data))), data);
-    }
 }

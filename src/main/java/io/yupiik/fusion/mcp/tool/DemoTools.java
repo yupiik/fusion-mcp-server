@@ -15,17 +15,18 @@
  */
 package io.yupiik.fusion.mcp.tool;
 
-import io.yupiik.fusion.mcp.mcp.api.MCPPrompt;
-import io.yupiik.fusion.mcp.mcp.api.MCPTool;
-import io.yupiik.fusion.mcp.mcp.model.PromptResponse;
-import io.yupiik.fusion.mcp.tool.model.Demo;
 import io.yupiik.fusion.framework.api.scope.ApplicationScoped;
 import io.yupiik.fusion.framework.build.api.jsonrpc.JsonRpc;
 import io.yupiik.fusion.framework.build.api.jsonrpc.JsonRpcParam;
+import io.yupiik.fusion.mcp.api.MCPPrompt;
+import io.yupiik.fusion.mcp.api.MCPTool;
+import io.yupiik.fusion.mcp.model.PromptResponse;
+import io.yupiik.fusion.mcp.model.Role;
+import io.yupiik.fusion.mcp.tool.model.Demo;
 
 import java.util.List;
 
-import static io.yupiik.fusion.mcp.mcp.model.Content.text;
+import static io.yupiik.fusion.mcp.model.Content.text;
 
 @ApplicationScoped
 public class DemoTools {
@@ -38,8 +39,11 @@ public class DemoTools {
     @MCPPrompt
     @JsonRpc(value = "demo/prompt", documentation = "Demo.")
     public PromptResponse demoPrompt(@JsonRpcParam final String code) {
-        return new PromptResponse("hello fusion!", List.of(new PromptResponse.Message(
-                PromptResponse.Role.user,
-                text("hello sir! your code is <" + code + '>'))));
+        return new PromptResponse(
+                null,
+                "hello fusion!",
+                List.of(new PromptResponse.Message(
+                        Role.user,
+                        text("hello sir! your code is <" + code + '>'))));
     }
 }

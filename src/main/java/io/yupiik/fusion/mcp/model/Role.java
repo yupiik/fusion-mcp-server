@@ -13,23 +13,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.mcp.mcp.model;
+package io.yupiik.fusion.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
 
-import java.util.List;
-
 @JsonModel
-public record ListToolsResponse(
-        List<Tool> tools,
-        String nextCursor
-) {
-    @JsonModel
-    public record Tool(
-            String name,
-            String description,
-            JsonSchema inputSchema,
-            JsonSchema outputSchema
-    ) {
-    }
+public enum Role {
+    user, assitant
 }

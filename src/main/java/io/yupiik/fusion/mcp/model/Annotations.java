@@ -13,15 +13,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.mcp.mcp.api;
+package io.yupiik.fusion.mcp.model;
 
-import io.yupiik.fusion.framework.build.api.metadata.BeanMetadataAlias;
+import io.yupiik.fusion.framework.build.api.json.JsonModel;
 
-import java.lang.annotation.Retention;
+import java.time.OffsetDateTime;
+import java.util.List;
 
-import static java.lang.annotation.RetentionPolicy.SOURCE;
-
-@Retention(SOURCE)
-@BeanMetadataAlias(name = "mcp.type", value = "prompt")
-public @interface MCPPrompt {
+@JsonModel
+public record Annotations(
+        List<Role> audience,
+        OffsetDateTime lastModified,
+        Integer priority // min=0, max=1
+) {
+    public static int MOST_IMPORTANT_PRIOTITY = 1;
+    public static int LEAST_IMPORTANT_PRIOTITY = 0;
 }

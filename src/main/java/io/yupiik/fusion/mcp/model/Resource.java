@@ -13,28 +13,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.mcp.mcp.model;
+package io.yupiik.fusion.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
+import io.yupiik.fusion.framework.build.api.json.JsonProperty;
 
-// note: this is not complete, more for demo purposes
+import java.util.Base64;
+
 @JsonModel
-public record Capabilities(
-        Roots roots,
-        Sampling sampling,
-        Elicitation elicitation
+public record Resource(
+        @JsonProperty("_meta") Metadata metadata,
+        String uri, String mimeType,
+        String text,
+        String blob // base64, required
 ) {
-    @JsonModel
-    public record Roots(
-            boolean listChanged
-    ) {
+    public static Resource text(final Metadata metadata, final String uri, final String mimeType, final String text) {
+        return new Resource(metadata, uri, mimeType, text, null);
     }
 
-    @JsonModel
-    public record Sampling() {
-    }
-
-    @JsonModel
-    public record Elicitation() {
+    public static Resource blob(final Metadata metadata, final String uri, final String mimeType, final byte[] content) {
+        return new Resource(metadata, uri, mimeType, null, Base64.getEncoder().encodeToString(content));
     }
 }

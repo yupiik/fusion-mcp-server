@@ -13,25 +13,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.mcp.mcp.model;
+package io.yupiik.fusion.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
+import io.yupiik.fusion.framework.build.api.json.JsonProperty;
 
 import java.util.List;
 
 @JsonModel
-public record PromptResponse(
-        String description,
-        List<Message> messages
+public record CompleteResult(
+        @JsonProperty("_meta") Metadata metadata,
+        Completion completion
 ) {
     @JsonModel
-    public record Message(
-            Role role,
-            Content content
-    ) {}
-
-    @JsonModel
-    public enum Role {
-        user, assitant
+    public record Completion(
+            boolean hasMore,
+            int total,
+            List<String> values
+    ) {
     }
 }

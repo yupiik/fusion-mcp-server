@@ -13,10 +13,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.mcp.mcp.model;
+package io.yupiik.fusion.mcp.api;
 
-import io.yupiik.fusion.framework.build.api.json.JsonModel;
+import io.yupiik.fusion.framework.build.api.metadata.BeanMetadataAlias;
 
-@JsonModel
-public record Resource(String uri, String mimeType, String text) {
+import java.lang.annotation.Retention;
+
+import static java.lang.annotation.RetentionPolicy.SOURCE;
+
+@Retention(SOURCE)
+@BeanMetadataAlias(name = "mcp.type", value = "tool")
+public @interface MCPTool {
 }

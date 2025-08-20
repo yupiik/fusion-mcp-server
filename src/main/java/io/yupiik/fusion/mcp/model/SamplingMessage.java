@@ -13,29 +13,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.mcp.mcp.model;
+package io.yupiik.fusion.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
 
-import java.util.List;
-
 @JsonModel
-public record ListPromptsResponse(
-        List<Prompt> prompts,
-        String nextCursor
+public record SamplingMessage(
+        Role role,
+        Content content
 ) {
-    @JsonModel
-    public record Prompt(
-            String name,
-            String description,
-            List<Argument> arguments
-    ) {
-        @JsonModel
-        public record Argument(
-                String name,
-                String description,
-                Boolean required
-        ) {
-        }
-    }
 }
