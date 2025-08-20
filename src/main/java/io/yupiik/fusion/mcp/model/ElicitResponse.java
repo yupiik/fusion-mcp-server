@@ -13,12 +13,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.tool.model;
+package io.yupiik.fusion.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
+import io.yupiik.fusion.framework.build.api.json.JsonProperty;
+
+import java.util.Map;
 
 @JsonModel
-public record Demo(
-        String greeting
+public record ElicitResponse(
+        @JsonProperty("_meta") Metadata metadata,
+        Action action,
+        Map<String, Object> content
 ) {
+    @JsonModel
+    public enum Action {
+        accept, cancel, decline
+    }
 }

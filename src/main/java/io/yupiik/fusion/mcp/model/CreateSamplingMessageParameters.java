@@ -13,12 +13,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.tool.model;
+package io.yupiik.fusion.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
 
+import java.util.List;
+import java.util.Map;
+
+// sampling/createMessage params
 @JsonModel
-public record Demo(
-        String greeting
+public record CreateSamplingMessageParameters(
+        SamplingServer includeContext,
+        Integer maxTokens,
+        List<SamplingMessage> messages,
+        Map<String, Object> metadata,
+        ModelPreferences modelPreferences,
+        List<String> stopSequences,
+        String systemPrompt,
+        Double temperature
 ) {
 }

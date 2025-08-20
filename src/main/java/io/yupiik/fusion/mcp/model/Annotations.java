@@ -13,12 +13,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.tool.model;
+package io.yupiik.fusion.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
 
+import java.time.OffsetDateTime;
+import java.util.List;
+
 @JsonModel
-public record Demo(
-        String greeting
+public record Annotations(
+        List<Role> audience,
+        OffsetDateTime lastModified,
+        Integer priority // min=0, max=1
 ) {
+    public static int MOST_IMPORTANT_PRIOTITY = 1;
+    public static int LEAST_IMPORTANT_PRIOTITY = 0;
 }

@@ -13,12 +13,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.tool.model;
+package io.yupiik.fusion.mcp.api;
 
-import io.yupiik.fusion.framework.build.api.json.JsonModel;
+import io.yupiik.fusion.framework.build.api.metadata.BeanMetadataAlias;
 
-@JsonModel
-public record Demo(
-        String greeting
-) {
+import java.lang.annotation.Retention;
+
+import static java.lang.annotation.RetentionPolicy.SOURCE;
+
+@Retention(SOURCE)
+@BeanMetadataAlias(name = "mcp.type", value = "prompt")
+public @interface MCPPrompt {
 }

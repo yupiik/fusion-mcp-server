@@ -13,12 +13,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.tool.model;
+package io.yupiik.fusion.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
 
+import java.util.Map;
+
+// note: this is not complete, more for demo purposes
 @JsonModel
-public record Demo(
-        String greeting
+public record Capabilities(
+        Roots roots,
+        Map<String, Object> sampling,
+        Map<String, Object> elicitation,
+        Map<String, Object> experimental
 ) {
+    @JsonModel
+    public record Roots(
+            boolean listChanged
+    ) {
+    }
 }

@@ -13,12 +13,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.tool.model;
+package io.yupiik.fusion.mcp.model;
 
 import io.yupiik.fusion.framework.build.api.json.JsonModel;
 
 @JsonModel
-public record Demo(
-        String greeting
-) {
+public enum SamplingServer {
+    allServers, none, thisServer
 }

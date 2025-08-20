@@ -13,12 +13,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.tool.model;
+package io.yupiik.fusion.mcp.model;
 
-import io.yupiik.fusion.framework.build.api.json.JsonModel;
+import io.yupiik.fusion.framework.build.api.json.JsonProperty;
 
-@JsonModel
-public record Demo(
-        String greeting
-) {
+// used by several server -> client requests like roots/list for ex
+public record MetadataParameters(@JsonProperty("_meta") Metadata metadata) {
 }

@@ -13,12 +13,5 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package io.yupiik.fusion.tool.model;
-
-import io.yupiik.fusion.framework.build.api.json.JsonModel;
-
-@JsonModel
-public record Demo(
-        String greeting
-) {
-}
+// from https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/175a52036c73385047a85bfb996f24e5f1f51c80/schema/2025-06-18/schema.json
+package io.yupiik.fusion.mcp.model;
