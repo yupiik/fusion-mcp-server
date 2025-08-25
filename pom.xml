@@ -21,10 +21,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.yupiik.fusion.mcp</groupId>
-    <artifactId>fusion-mcp-server</artifactId>
+    <artifactId>fusion-mcp-server-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <name>Fusion MCP Server</name>
+    <packaging>pom</packaging>
+    <name>Fusion MCP Server :: Parent</name>
     <description>Fusion Model Context Protocol Server.</description>
     <url>https://yupiik.github.io/fusion-mcp-server/</url>
 
@@ -41,51 +41,58 @@
         <junit-jupiter.version>5.13.4</junit-jupiter.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>io.yupiik.fusion</groupId>
-            <artifactId>fusion-build-api</artifactId>
-            <version>${fusion.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.yupiik.fusion</groupId>
-            <artifactId>fusion-processor</artifactId>
-            <version>${fusion.version}</version>
-            <scope>provided</scope>
-        </dependency>
+    <modules>
+        <module>mcp-server</module>
+        <module>demo</module>
+    </modules>
 
-        <dependency>
-            <groupId>io.yupiik.fusion</groupId>
-            <artifactId>fusion-api</artifactId>
-            <version>${fusion.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.yupiik.fusion</groupId>
-            <artifactId>fusion-jsonrpc</artifactId>
-            <version>${fusion.version}</version>
-        </dependency>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.yupiik.fusion</groupId>
+                <artifactId>fusion-build-api</artifactId>
+                <version>${fusion.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.yupiik.fusion</groupId>
+                <artifactId>fusion-processor</artifactId>
+                <version>${fusion.version}</version>
+                <scope>provided</scope>
+            </dependency>
 
-        <dependency>
-            <groupId>io.yupiik.logging</groupId>
-            <artifactId>yupiik-logging-jul</artifactId>
-            <version>${yupiik-logging.version}</version>
-            <scope>runtime</scope>
-        </dependency>
+            <dependency>
+                <groupId>io.yupiik.fusion</groupId>
+                <artifactId>fusion-api</artifactId>
+                <version>${fusion.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.yupiik.fusion</groupId>
+                <artifactId>fusion-jsonrpc</artifactId>
+                <version>${fusion.version}</version>
+            </dependency>
 
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit-jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.yupiik.fusion</groupId>
-            <artifactId>fusion-testing</artifactId>
-            <version>${fusion.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+            <dependency>
+                <groupId>io.yupiik.logging</groupId>
+                <artifactId>yupiik-logging-jul</artifactId>
+                <version>${yupiik-logging.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit-jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.yupiik.fusion</groupId>
+                <artifactId>fusion-testing</artifactId>
+                <version>${fusion.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <pluginManagement>
