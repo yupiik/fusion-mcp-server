@@ -28,17 +28,15 @@ jobs:
     steps:
       - name: Clone
         uses: actions/checkout@v4
-      - name: Cache Maven Repository
-        uses: actions/cache@v4
+      - name: Setup Maven Action
+        uses: s4u/setup-maven-action@v1.18.0
         with:
-          path: |
-            /home/runner/work/fusion-mcp-server/fusion-mcp-server/.m2
-          key: m2_repository
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
+          maven-version: 4.0.0-rc-4
           java-version: '24'
+          java-distribution: 'zulu'
+          cache-enabled: 'true'
+          cache-path: '~/.m2/repository'
+          cache-prefix: 'fusion-mcp-server'
       - name: Build
         run: mvn install -Dm2.location=/home/runner/work/fusion-mcp-server/fusion-mcp-server/.m2
       - name: Remove Snapshots Before Caching
@@ -49,16 +47,15 @@ jobs:
     steps:
       - name: Clone
         uses: actions/checkout@v4
-      - name: Cache Maven Repository
-        uses: actions/cache@v4
+      - name: Setup Maven Action
+        uses: s4u/setup-maven-action@v1.18.0
         with:
-          path: /home/runner/work/fusion-mcp-server/fusion-mcp-server/.m2
-          key: m2_repository
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
+          maven-version: 4.0.0-rc-4
           java-version: '24'
+          java-distribution: 'zulu'
+          cache-enabled: 'true'
+          cache-path: '~/.m2/repository'
+          cache-prefix: 'fusion-mcp-server'
       - name: Build
         run: mvn install -DskipTests ossindex:audit
       - name: Remove Snapshots Before Caching
