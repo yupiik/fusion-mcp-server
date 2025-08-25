@@ -24,7 +24,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 
-import static io.yupiik.fusion.mcp.demo.test.JsonAsserts.assertJsonEquals;
+import static io.yupiik.fusion.testing.assertion.JsonAsserts.assertJsonEquals;
 import static java.net.http.HttpResponse.BodyHandlers.ofString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -61,8 +61,7 @@ class DemoTest {
                 ofString());
 
         assertEquals(200, res.statusCode());
-        assertJsonEquals(
-                """
+        assertJsonEquals("""
                         {
                           "jsonrpc": "2.0",
                           "id": 1,
@@ -104,8 +103,7 @@ class DemoTest {
                 ofString());
 
         assertEquals(200, res.statusCode());
-        assertJsonEquals(
-                """
+        assertJsonEquals("""
                         {
                           "jsonrpc": "2.0",
                           "id": 1,
@@ -159,8 +157,7 @@ class DemoTest {
                 ofString());
 
         assertEquals(200, res.statusCode());
-        assertJsonEquals(
-                """
+        assertJsonEquals("""
                         {
                           "jsonrpc": "2.0",
                           "id": 1,
@@ -200,8 +197,7 @@ class DemoTest {
                 ofString());
 
         assertEquals(200, res.statusCode());
-        assertJsonEquals(
-                """
+        assertJsonEquals("""
                         {
                           "jsonrpc": "2.0",
                           "id": 1,

@@ -24,7 +24,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 
-import static io.yupiik.fusion.mcp.test.JsonAsserts.assertJsonEquals;
+import static io.yupiik.fusion.testing.assertion.JsonAsserts.assertJsonEquals;
 import static java.net.http.HttpResponse.BodyHandlers.ofString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -61,8 +61,7 @@ class MCPJSONRPCProtocolTest {
                 ofString());
 
         assertEquals(200, res.statusCode());
-        assertJsonEquals(
-                """
+        assertJsonEquals("""
                         {
                           "jsonrpc": "2.0",
                           "id": 1,
@@ -111,22 +110,21 @@ class MCPJSONRPCProtocolTest {
                 ofString());
 
         assertEquals(200, res.statusCode());
-        assertJsonEquals(
-                """
+        assertJsonEquals("""
                         {                                                                                                                                                                                                                       \s
-                           "jsonrpc": "2.0",                                                                                                                                                                                                                  \s
-                           "id": 1,                                                                                                                                                                                                                           \s
-                           "result": {                                                                                                                                                                                                                        \s
-                             "capabilities": {},                                                                                                                                                                                                              \s
-                             "instructions": "Use tool",                                                                                                                                                                                                      \s
-                             "protocolVersion": "2025-06-18",                                                                                                                                                                                                 \s
-                             "serverInfo": {                                                                                                                                                                                                                  \s
-                               "name": "fusion-mcp-server",                                                                                                                                                                                                   \s
-                               "title": "Fusion MCP Server",                                                                                                                                                                                                  \s
-                               "version": "1.0.0"                                                                                                                                                                                                             \s
-                             }                                                                                                                                                                                                                                \s
-                           }                                                                                                                                                                                                                                  \s
-                         }""",
+                            "jsonrpc": "2.0",                                                                                                                                                                                                                  \s
+                            "id": 1,                                                                                                                                                                                                                           \s
+                            "result": {                                                                                                                                                                                                                        \s
+                              "capabilities": {},                                                                                                                                                                                                              \s
+                              "instructions": "Use tool",                                                                                                                                                                                                      \s
+                              "protocolVersion": "2025-06-18",                                                                                                                                                                                                 \s
+                              "serverInfo": {                                                                                                                                                                                                                  \s
+                                "name": "fusion-mcp-server",                                                                                                                                                                                                   \s
+                                "title": "Fusion MCP Server",                                                                                                                                                                                                  \s
+                                "version": "1.0.0"                                                                                                                                                                                                             \s
+                              }                                                                                                                                                                                                                                \s
+                            }                                                                                                                                                                                                                                  \s
+                        }""",
                 res.body());
     }
 }
