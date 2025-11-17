@@ -31,8 +31,8 @@ jobs:
       - name: Setup Maven Action
         uses: s4u/setup-maven-action@v1.18.0
         with:
-          maven-version: 4.0.0-rc-4
-          java-version: '24'
+          maven-version: 4.0.0-rc-5
+          java-version: '25'
           java-distribution: 'zulu'
           cache-enabled: 'true'
           cache-path: '~/.m2/repository'
@@ -50,8 +50,8 @@ jobs:
       - name: Setup Maven Action
         uses: s4u/setup-maven-action@v1.18.0
         with:
-          maven-version: 4.0.0-rc-4
-          java-version: '24'
+          maven-version: 4.0.0-rc-5
+          java-version: '25'
           java-distribution: 'zulu'
           cache-enabled: 'true'
           cache-path: '~/.m2/repository'
