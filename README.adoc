@@ -8,7 +8,7 @@ image:https://img.shields.io/github/license/yupiik/fusion-mcp-server.svg[License
 
 == 🔧 Getting Started
 
-You can run it with `mvn package exec:exec` and configure `http://localhost:8080/mcp` as MCP server.
+You can run the demo with `mvn package -pl demo exec:exec` from the root directory and configure `http://localhost:8080/mcp` as MCP server.
 
 == 📖 Documentation
 
@@ -25,7 +25,7 @@ We warmly welcome contributions!
 
 === Build
 
-Pre-requisite: Apache Maven >= 4.0.0-rc1 and Java >= 24.
+Pre-requisite: Apache Maven >= 4.0.0-rc1 and Java >= 25.
 
 TIP: it can be native-compiled with GraalVM is desired.
 
