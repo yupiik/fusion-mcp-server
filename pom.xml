@@ -162,19 +162,6 @@
 
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <configuration>
-                    <executable>java</executable>
-                    <arguments>
-                        <argument>-Djava.util.logging.manager=io.yupiik.logging.jul.YupiikLogManager</argument>
-                        <argument>-classpath</argument>
-                        <classpath/>
-                        <argument>io.yupiik.fusion.framework.api.main.Launcher</argument>
-                    </arguments>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
                 <executions>
