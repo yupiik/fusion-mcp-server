@@ -1,4 +1,4 @@
 # Enable auto-env through the sdkman_auto_env config
 # Add key=value pairs of SDKs to use below
-java=24-zulu
-maven=4.0.0-rc-4
+java=25-zulu
+maven=4.0.0-rc-5
