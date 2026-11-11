@@ -21,7 +21,7 @@
 
   <groupId>io.yupiik.fusion.mcp</groupId>
   <artifactId>fusion-mcp-server-parent</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
   <name>Fusion MCP Server :: Parent</name>
   <description>Fusion Model Context Protocol Server.</description>
@@ -71,7 +71,7 @@
   <scm>
     <connection>scm:git:https://github.com/yupiik/fusion-mcp-server.git</connection>
     <developerConnection>scm:git:https://github.com/yupiik/fusion-mcp-server.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>fusion-mcp-server-parent-1.0.0</tag>
     <url>https://github.com/yupiik/fusion-mcp-server.git</url>
   </scm>
 
@@ -80,7 +80,7 @@
     <maven.compiler.target>25</maven.compiler.target>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.build.outputTimestamp>2025-08-08T09:32:46Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2026-11-11T16:26:02Z</project.build.outputTimestamp>
 
     <fusion.version>1.2.0</fusion.version>
     <!-- keep it aligned with what fusion-http-server brings, else the servlet API would not match tomcat-catalina -->
