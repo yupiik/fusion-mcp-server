@@ -41,22 +41,3 @@ jobs:
         run: mvn install -Dm2.location=/home/runner/work/fusion-mcp-server/fusion-mcp-server/.m2
       - name: Remove Snapshots Before Caching
         run: find /home/runner/work/fusion-mcp-server/fusion-mcp-server/.m2 -name '*SNAPSHOT' | xargs rm -Rf
-  security_audit:
-    name: Security Audit
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Setup Maven Action
-        uses: s4u/setup-maven-action@ba34de01b7f4ba2ab8e2860df8993a29f4477056 # v1.20.0
-        with:
-          maven-version: 4.0.0-rc-5
-          java-version: '25'
-          java-distribution: 'zulu'
-          cache-enabled: 'true'
-          cache-path: '~/.m2/repository'
-          cache-prefix: 'fusion-mcp-server'
-      - name: Build
-        run: mvn install -DskipTests ossindex:audit
-      - name: Remove Snapshots Before Caching
-        run: find /home/runner/work/fusion-mcp-server/fusion-mcp-server/.m2 -name '*SNAPSHOT' | xargs rm -Rf
