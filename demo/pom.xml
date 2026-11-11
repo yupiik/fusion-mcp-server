@@ -32,7 +32,7 @@
   <description>Demo.</description>
 
   <properties>
-    <arthur.version>1.0.9</arthur.version>
+    <arthur.version>1.0.10</arthur.version>
     <graalvm.version>25.0.1</graalvm.version>
     <image.registry>ossyupiik</image.registry>
     <image.name>${image.registry}/fusion-mcp-server/${project.artifactId}:${project.version}</image.name>
