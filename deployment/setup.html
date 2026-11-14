@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Setup</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Expose a Yupiik Fusion application to any MCP client - tools are plain JSON-RPC
+                        methods.">
+    <meta name="author" content="Yupiik Minisite Generator">
+    <meta name="generator" content="Yupiik Minisite Generator">
+    
+    <link rel="shortcut icon" href="//yupiik.github.io/fusion-mcp-server/images/favicon.png">
+    <meta name="theme-color" content="#191b20" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#191b20" media="(prefers-color-scheme: light)">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="//yupiik.github.io/fusion-mcp-server/css/syntax-highlighting.css?v=1.0.3-SNAPSHOT">
+    <link id="theme-style" rel="stylesheet" href="//yupiik.github.io/fusion-mcp-server/css/theme.css?v=1.0.3-SNAPSHOT">
+    
+    
+<script>/* inline to avoid flicker */try{var t=localStorage.getItem('yupiik-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}</script>
+</head>
+<body>
+<header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <a class="brand-link" title="Home" href="//yupiik.github.io/fusion-mcp-server/index.html">
+                    <img class="brand-logo" src="//yupiik.github.io/fusion-mcp-server/images/logo.svg" alt="logo">
+                    <span class="brand-text">Fusion MCP Server<span class="brand-side">Documentation</span></span>
+                </a>
+            </div>
+            <div class="header-actions">
+                
+                <button class="icon-btn" id="search-button" type="button" title="Search" aria-label="Search">
+        <i class="fas fa-search" aria-hidden="true"></i>
+    </button>
+                
+				<ul class="social-list">
+				<li class="list-inline-item"><a title="Github" target="_blank"
+                            href="https://www.github.com/yupiik/fusion-mcp-server"><i class="fab fa-github
+                            fa-fw"></i></a></li>
+				</ul>
+				<button class="icon-btn" id="theme-toggle" type="button" title="Toggle theme" aria-label="Toggle theme">
+					<svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm0-16a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM6.34 4.93a1 1 0 1 1 1.41 1.41 1 1 0 0 1-1.41-1.41zm11.32 12.73a1 1 0 1 1 1.41 1.41 1 1 0 0 1-1.41-1.41zM4 11a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm16 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM4.93 17.66a1 1 0 1 1 1.41-1.41 1 1 0 0 1-1.41 1.41zm12.73-11.32a1 1 0 1 1 1.41-1.41 1 1 0 0 1-1.41 1.41z"/></svg>
+					<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+				</button>
+            </div>
+        </div>
+    </header>
+	<div class="page">
+<div class="page-navigation-left">
+    <h3 class="menu-label">Menu</h3>
+    <ul>
+<li>
+    <a title="Fusion MCP Server" href="//yupiik.github.io/fusion-mcp-server/index.html">
+        <i class="fas fa-play"></i>Overview
+    </a>
+</li><li>
+    <a title="MCP" href="//yupiik.github.io/fusion-mcp-server/mcp/index.html">
+        <i class="fas fa-wrench"></i>MCP
+    </a>
+</li><li>
+    <a title="Deployment" href="//yupiik.github.io/fusion-mcp-server/deployment/index.html">
+        <i class="fas fa-server"></i>Deployment
+    </a>
+</li><li>
+    <a title="Internals" href="//yupiik.github.io/fusion-mcp-server/internals/index.html">
+        <i class="fas fa-sitemap"></i>Internals
+    </a>
+</li>
+    </ul>
+</div>
+<div id="deployment-setup-html-container" class="container page-content deployment-setup-html ">
+            <div class="page-header">
+                <h1>Setup</h1>
+            </div>
+            <div class="page-content-body">
+                <div class="sect1">
+  <h2 id="_requirements">Requirements</h2>
+ <div class="sectionbody">
+ <div class="ulist">
+ <ul>
+  <li>
+ <p>
+Java &gt;= 25 - the project is built with the Fusion annotation processor, which runs at compile time,
+ </p>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p>Yupiik Fusion &gt;= 1.0.38 - older releases describe an asynchronous JSON-RPC result incorrectly in the generated OpenRPC document, which would make the <code>outputSchema</code> of every <code>CompletionStage&lt;T&gt;</code> tool wrong,</p>
+ </div>
+  </li>
+  <li>
+ <p>
+Apache Maven &gt;= 4.0.0-rc1 to build this project itself (an application consuming it has no such constraint).
+ </p>
+  </li>
+ </ul>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_dependencies">Dependencies</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+An application needs the usual Fusion triad plus this module:
+ </p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencies&gt;
+  &lt;dependency&gt; &lt;!-- build time only: annotations --&gt;
+    &lt;groupId&gt;io.yupiik.fusion&lt;/groupId&gt;
+    &lt;artifactId&gt;fusion-build-api&lt;/artifactId&gt;
+    &lt;version&gt;1.2.0&lt;/version&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt; &lt;!-- build time only: the generator --&gt;
+    &lt;groupId&gt;io.yupiik.fusion&lt;/groupId&gt;
+    &lt;artifactId&gt;fusion-processor&lt;/artifactId&gt;
+    &lt;version&gt;1.2.0&lt;/version&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;io.yupiik.fusion&lt;/groupId&gt;
+    &lt;artifactId&gt;fusion-api&lt;/artifactId&gt;
+    &lt;version&gt;1.2.0&lt;/version&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt; &lt;!-- the MCP transport, protocol and model --&gt;
+    &lt;groupId&gt;io.yupiik.fusion.mcp&lt;/groupId&gt;
+    &lt;artifactId&gt;fusion-mcp-server-impl&lt;/artifactId&gt;
+    &lt;version&gt;1.0.3-SNAPSHOT&lt;/version&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
+ </div>
+ </div>
+ <div class="admonitionblock tip">
+  <table>
+    <tbody>
+     <tr>
+      <td class="icon">
+     <div class="title">TIP</div>
+       </td>
+      <td class="content">
+ <div class="paragraph">
+ <p><code>fusion-mcp-server-impl</code> brings <code>fusion-jsonrpc</code> and <code>fusion-http-server</code> transitively, there is nothing else to add to get an HTTP server serving MCP.</p>
+ </div>
+    </td>
+   </tr>
+      </tbody>
+  </table>
+ </div>
+ <div class="paragraph">
+ <p>
+Ensure the annotation processor runs on the whole module:
+ </p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;plugin&gt;
+  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+  &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+  &lt;configuration&gt;
+    &lt;proc&gt;full&lt;/proc&gt;
+  &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre>
+ </div>
+ </div>
+ <div class="admonitionblock important">
+  <table>
+    <tbody>
+     <tr>
+      <td class="icon">
+     <div class="title">IMPORTANT</div>
+       </td>
+      <td class="content">
+ <div class="paragraph">
+ <p>the processor must see all the classes at once, so incremental compilation should be disabled - else a tool can be missing from the generated OpenRPC document and therefore from <code>tools/list</code>.</p>
+ </div>
+    </td>
+   </tr>
+      </tbody>
+  </table>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_a_complete_server">A complete server</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Two classes are enough - one tool and its result model:
+ </p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package demo;
+
+import io.yupiik.fusion.framework.api.scope.ApplicationScoped;
+import io.yupiik.fusion.framework.build.api.json.JsonModel;
+import io.yupiik.fusion.framework.build.api.jsonrpc.JsonRpc;
+import io.yupiik.fusion.framework.build.api.jsonrpc.JsonRpcParam;
+import io.yupiik.fusion.mcp.api.MCPTool;
+
+@ApplicationScoped
+public class Tools {
+    @MCPTool
+    @JsonRpc(value = &quot;demo/greet&quot;, documentation = &quot;Greets someone by name.&quot;)
+    public Greeting greet(@JsonRpcParam(required = true, documentation = &quot;Who to greet.&quot;) final String name) {
+        return new Greeting(&quot;hello &quot; + name);
+    }
+
+    @JsonModel
+    public record Greeting(String greeting) {}
+}
+</code></pre>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Then run the Fusion launcher, <code>io.yupiik.fusion.framework.api.main.Launcher</code>, and the server listens on <code> <a href="http://localhost:8080/mcp" class="inline-code">http://localhost:8080/mcp</a>
+</code>:</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">java -cp &quot;target/classes:$(cat target/classpath.txt)&quot; io.yupiik.fusion.framework.api.main.Launcher
+</code></pre>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>The demo module of this repository uses <code>exec-maven-plugin</code> to do exactly that:</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mvn package -pl demo exec:exec
+</code></pre>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_endpoints">Endpoints</h2>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 25%;">
+   <col style="width: 75%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Route    </th>
+    <th class="tableblock halign-left">
+Purpose    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>POST /mcp</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+JSON-RPC requests, notifications and the responses to server requests.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>GET /mcp</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the <code>text/event-stream</code> channel used to push messages to the client.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>DELETE /mcp</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+session termination.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ <div class="paragraph">
+ <p>The port is the standard Fusion one, <code>fusion.http-server.port</code> (default <code>8080</code>). See  <a href="configuration.html">Configuration</a>
+ for the rest and  <a href="transport.html">Transport</a>
+ for the protocol details.</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_graalvm_native_image">GraalVM native image</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Nothing specific is required: no reflection is used, all the JSON codecs and beans are generated at build time and Fusion registers the resources it needs (including the OpenRPC document the tool descriptors are built from). The demo module is native-compiled with Apache Geronimo Arthur:
+ </p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mvn package arthur:native-image -pl demo
+# and, to also build a container image
+mvn package arthur:native-image arthur:docker -pl demo
+</code></pre>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_next">Next</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>Expose your features:  <a href="../mcp/tools.html">Tools</a>
+,  <a href="../mcp/prompts.html">Prompts</a>
+,  <a href="../mcp/resources.html">Resources</a>
+.</p>
+ </div>
+ </div>
+ </div>
+                
+                <nav class="page-footer-nav" aria-label="Docs pages">
+    <a href="index.html" class="page-footer-nav-link-prev">
+    <div>Previous</div>
+    <div>Deployment</div>
+</a>
+    <a href="configuration.html" class="page-footer-nav-link-next">
+    <div>Next</div>
+    <div>Configuration</div>
+</a>
+</nav>
+            </div>
+        </div>
+<div class="page-navigation-right">
+        <h3>Navigation</h3>
+        <nav class="generated-nav-menu"></nav>
+    </div>
+    </div>
+<footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-social">
+                <ul class="social-list">
+                <li class="list-inline-item"><a title="Github" target="_blank"
+                            href="https://www.github.com/yupiik/fusion-mcp-server"><i class="fab fa-github
+                            fa-fw"></i></a></li>
+                </ul>
+            </div>
+            <nav class="footer-bar"><small class="copyright">© 2026 <strong><a href="https://www.yupiik.com">Yupiik</a></strong>.
+                        All Rights Reserved</small><a class="legal-link" href="https://www.yupiik.com/terms-of-use/">Terms of use</a><a class="legal-link" href="https://www.yupiik.com/privacy-policy/">Privacy policy</a></nav>
+        </div>
+    </footer>
+
+    <div class="modal" id="searchModal" role="dialog" aria-label="Search site">
+    <div class="modal-overlay" data-close-modal></div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-header">
+            <h5 class="modal-title">Search</h5>
+            <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input class="form-control" id="searchInput" placeholder="Search the docs..." autocomplete="off">
+            <div class="search-hits"></div>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/highlight.min.js" integrity="sha384-pZ4gLQJIEk/VKnGk59xUSQK8Ne/erZQR9cpnPXPLB9iN1tXsVkRVfHYGdFYrSkv1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/bash.min.js" integrity="sha384-efs9Q+5nnPiBO0WMrHtZ2b4ZbGnY0xWwGyXD6wEdpsx5FloMqm1cIVIKG1Bdvg40" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/json.min.js" integrity="sha384-NnOc9XV+udt/++RdhhzykFpOtc2D05945J+tYJKxgDKzBhgT/v7WDgIYAfP5LaSa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/dockerfile.min.js" integrity="sha384-0zNCDFuDropscQQX105Gh/3QcoGRmz/FNUFCljVEETiDYRYMhSEyRydgyjQTlgds" crossorigin="anonymous"></script>
+    <script>if (!(window.minisite || {}).skipHighlightJs) {
+        document.querySelectorAll('.page-content-body pre code').forEach(function (codeBlock) {
+            hljs.highlightElement(codeBlock);
+        });
+        function addCopyButtons(clipboard) {
+          document.querySelectorAll('.page-content-body pre').forEach(function (codeBlock) {
+            var button = document.createElement('button');
+            button.className = 'copy-code-button';
+            button.type = 'button';
+            button.setAttribute('aria-label', 'Copy code to clipboard');
+            button.innerHTML = '<svg class="copy-glyph" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"></rect><path d="M10.5 5.5v-1A2 2 0 0 0 8.5 2.5h-5A2 2 0 0 0 1.5 4.5v5a2 2 0 0 0 2 2h1"></path></svg>' +
+                '<svg class="copy-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5"></path></svg>';
+            button.addEventListener('click', function () {
+              clipboard.writeText(codeBlock.querySelector('code') ? codeBlock.querySelector('code').innerText : codeBlock.innerText).then(function () {
+                button.classList.add('is-copied');
+                button.blur();
+                setTimeout(function () { button.classList.remove('is-copied'); }, 2000);
+              }, function () {
+                button.classList.add('is-copied');
+                button.querySelector('.copy-check').style.stroke = 'var(--brand-purple)';
+              });
+            });
+            codeBlock.appendChild(button);
+          });
+        }
+        if (navigator && navigator.clipboard) {
+         addCopyButtons(navigator.clipboard);
+        } else {
+         var script = document.createElement('script');
+         script.src = '//cdnjs.cloudflare.com/ajax/libs/clipboard-polyfill/2.7.0/clipboard-polyfill.promise.js';
+         script.integrity = 'sha256-waClS2re9NUbXRsryKoof+F9qc1gjjIhc2eT7ZbIv94=';
+         script.crossOrigin = 'anonymous';
+         script.onload = function() {addCopyButtons(clipboard);};
+         document.body.appendChild(script);
+        }
+    }</script>
+    <script src="//yupiik.github.io/fusion-mcp-server/js/minisite.js?v=1.0.3-SNAPSHOT"></script>
+    <script>$('.page-content-body').generatedNavMenu();</script>
+    
+    
+
+<script>
+    (function () {
+        // theme toggle
+        var root = document.documentElement;
+        var toggle = document.getElementById('theme-toggle');
+        if (toggle) {
+            function currentDark() {
+                var stored = root.getAttribute('data-theme');
+                if (stored === 'light' || stored === 'dark') return stored === 'dark';
+                // no explicit attribute yet: follow the OS preference
+                return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+            toggle.addEventListener('click', function () {
+                var next = currentDark() ? 'light' : 'dark';
+                root.setAttribute('data-theme', next);
+                try { localStorage.setItem('yupiik-theme', next); } catch (e) {}
+            });
+        }
+        // search modal
+        var modal = document.getElementById('searchModal');
+        function openModal() { if (modal) modal.classList.add('open'); }
+        function closeModal() { if (modal) modal.classList.remove('open'); }
+        var sb = document.getElementById('search-button');
+        if (sb) sb.addEventListener('click', function (e) { e.preventDefault(); openModal(); });
+        if (modal) {
+            modal.addEventListener('click', function (e) { if (e.target.closest('[data-close-modal]')) closeModal(); });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+        }
+    })();
+</script>
+</body>
+</html>

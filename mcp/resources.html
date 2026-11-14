@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Resources</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Expose a Yupiik Fusion application to any MCP client - tools are plain JSON-RPC
+                        methods.">
+    <meta name="author" content="Yupiik Minisite Generator">
+    <meta name="generator" content="Yupiik Minisite Generator">
+    
+    <link rel="shortcut icon" href="//yupiik.github.io/fusion-mcp-server/images/favicon.png">
+    <meta name="theme-color" content="#191b20" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#191b20" media="(prefers-color-scheme: light)">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="//yupiik.github.io/fusion-mcp-server/css/syntax-highlighting.css?v=1.0.3-SNAPSHOT">
+    <link id="theme-style" rel="stylesheet" href="//yupiik.github.io/fusion-mcp-server/css/theme.css?v=1.0.3-SNAPSHOT">
+    
+    
+<script>/* inline to avoid flicker */try{var t=localStorage.getItem('yupiik-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}</script>
+</head>
+<body>
+<header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <a class="brand-link" title="Home" href="//yupiik.github.io/fusion-mcp-server/index.html">
+                    <img class="brand-logo" src="//yupiik.github.io/fusion-mcp-server/images/logo.svg" alt="logo">
+                    <span class="brand-text">Fusion MCP Server<span class="brand-side">Documentation</span></span>
+                </a>
+            </div>
+            <div class="header-actions">
+                
+                <button class="icon-btn" id="search-button" type="button" title="Search" aria-label="Search">
+        <i class="fas fa-search" aria-hidden="true"></i>
+    </button>
+                
+				<ul class="social-list">
+				<li class="list-inline-item"><a title="Github" target="_blank"
+                            href="https://www.github.com/yupiik/fusion-mcp-server"><i class="fab fa-github
+                            fa-fw"></i></a></li>
+				</ul>
+				<button class="icon-btn" id="theme-toggle" type="button" title="Toggle theme" aria-label="Toggle theme">
+					<svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm0-16a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM6.34 4.93a1 1 0 1 1 1.41 1.41 1 1 0 0 1-1.41-1.41zm11.32 12.73a1 1 0 1 1 1.41 1.41 1 1 0 0 1-1.41-1.41zM4 11a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm16 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM4.93 17.66a1 1 0 1 1 1.41-1.41 1 1 0 0 1-1.41 1.41zm12.73-11.32a1 1 0 1 1 1.41-1.41 1 1 0 0 1-1.41 1.41z"/></svg>
+					<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+				</button>
+            </div>
+        </div>
+    </header>
+	<div class="page">
+<div class="page-navigation-left">
+    <h3 class="menu-label">Menu</h3>
+    <ul>
+<li>
+    <a title="Fusion MCP Server" href="//yupiik.github.io/fusion-mcp-server/index.html">
+        <i class="fas fa-play"></i>Overview
+    </a>
+</li><li>
+    <a title="MCP" href="//yupiik.github.io/fusion-mcp-server/mcp/index.html">
+        <i class="fas fa-wrench"></i>MCP
+    </a>
+</li><li>
+    <a title="Deployment" href="//yupiik.github.io/fusion-mcp-server/deployment/index.html">
+        <i class="fas fa-server"></i>Deployment
+    </a>
+</li><li>
+    <a title="Internals" href="//yupiik.github.io/fusion-mcp-server/internals/index.html">
+        <i class="fas fa-sitemap"></i>Internals
+    </a>
+</li>
+    </ul>
+</div>
+<div id="mcp-resources-html-container" class="container page-content mcp-resources-html ">
+            <div class="page-header">
+                <h1>Resources</h1>
+            </div>
+            <div class="page-content-body">
+                <div id="preamble">
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>A resource is data the client can read and attach to a conversation: a file, a configuration, a database row, an API payload. Resources are dynamic by nature - they are data, not code - so unlike tools and prompts they are not mapped on JSON-RPC methods but provided at runtime by any bean implementing <code>MCPResources</code>:</p>
+ </div>
+ </div>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@ApplicationScoped
+public class MyResources implements MCPResources {
+    @Override
+    public List&lt;Resource&gt; resources() { <b class="conum">(1)</b>
+        return List.of(Resource.of(&quot;app://config&quot;, &quot;config&quot;, &quot;application/json&quot;, &quot;The application configuration.&quot;));
+    }
+
+    @Override
+    public List&lt;ResourceTemplate&gt; resourceTemplates() { <b class="conum">(2)</b>
+        return List.of(ResourceTemplate.of(&quot;app://logs/{day}&quot;, &quot;logs&quot;, &quot;text/plain&quot;, &quot;A daily log file.&quot;));
+    }
+
+    @Override
+    public Optional&lt;ReadResourceResponse&gt; read(final String uri) { <b class="conum">(3)</b>
+        if (&quot;app://config&quot;.equals(uri)) {
+            return Optional.of(ReadResourceResponse.of(
+                    ResourceContents.text(uri, &quot;application/json&quot;, configuration())));
+        }
+        if (uri.startsWith(&quot;app://logs/&quot;)) {
+            return Optional.of(ReadResourceResponse.of(
+                    ResourceContents.text(uri, &quot;text/plain&quot;, log(uri.substring(&quot;app://logs/&quot;.length())))));
+        }
+        return Optional.empty(); <b class="conum">(4)</b>
+    }
+}
+</code></pre>
+ </div>
+ </div>
+ <div class="colist arabic">
+  <ol>
+   <li>
+<code>resources/list</code> <span>
+: the resources with a stable uri.
+ </span>
+   </li>
+   <li>
+<code>resources/templates/list</code> <span>
+: the parameterized ones, using a RFC 6570 uri template.
+ </span>
+   </li>
+   <li>
+<code>resources/read</code> <span>
+: resolve a uri, whether it comes from the list or from a template expansion.
+ </span>
+   </li>
+   <li>
+ <span>
+Not ours - the next provider gets a chance, and if none answers the client gets 
+ </span>
+<code>-32002</code> <span>
+.
+ </span>
+   </li>
+  </ol>
+ </div>
+ <div class="paragraph">
+ <p>All the implementations are used and visited in bean priority order (<code>@Order</code>), which is how a module can add its own resources without knowing the others. The <code>resources</code> capability - and the related methods - is only advertised when at least one implementation exists.</p>
+ </div>
+ <div class="sect1">
+  <h2 id="_descriptor_versus_contents">Descriptor versus contents</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Two types, mirroring the specification:
+ </p>
+ </div>
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 25%;">
+   <col style="width: 75%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Role    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>Resource</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the <strong>descriptor</strong>: uri, name, title, description, mime type, size. This is what <code>resources/list</code> returns, it does not carry any data.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>ResourceContents</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the <strong>content</strong>: <code>text</code> or base64 <code>blob</code>, plus the uri and mime type. This is what <code>resources/read</code> returns.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ <div class="paragraph">
+ <p><code>ResourceContents.text(uri, mimeType, text)</code> and <code>ResourceContents.blob(uri, mimeType, bytes)</code> cover both cases, the latter encoding the bytes for you. A single uri can expand to several contents - a directory, a multi part document:</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">return Optional.of(new ReadResourceResponse(null, List.of(
+        ResourceContents.text(uri + &quot;/README.adoc&quot;, &quot;text/asciidoc&quot;, readme),
+        ResourceContents.blob(uri + &quot;/logo.png&quot;, &quot;image/png&quot;, logo))));
+</code></pre>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_subscriptions_and_change_notifications">Subscriptions and change notifications</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>The server tracks subscriptions per session, so <code>resources/subscribe</code> and <code>resources/unsubscribe</code> need no code on your side. Emitting the change does:</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@ApplicationScoped
+public class MyResources implements MCPResources {
+    private final MCPNotifier notifier;
+
+    public MyResources(final MCPNotifier notifier) {
+        this.notifier = notifier;
+    }
+
+    public void onConfigurationReloaded() {
+        notifier.resourceUpdated(&quot;app://config&quot;); <b class="conum">(1)</b>
+    }
+
+    public void onNewLogFile() {
+        notifier.resourceListChanged(); <b class="conum">(2)</b>
+    }
+}
+</code></pre>
+ </div>
+ </div>
+ <div class="colist arabic">
+  <ol>
+   <li>
+ <span>
+Only sent to the sessions which subscribed to that exact uri.
+ </span>
+   </li>
+   <li>
+ <span>
+Sent to every connected client, they are expected to call 
+ </span>
+<code>resources/list</code> <span>
+ again.
+ </span>
+   </li>
+  </ol>
+ </div>
+ <div class="admonitionblock note">
+  <table>
+    <tbody>
+     <tr>
+      <td class="icon">
+     <div class="title">NOTE</div>
+       </td>
+      <td class="content">
+ <div class="paragraph">
+ <p>a client only receives these while it keeps a <code>GET /mcp</code> stream open; messages emitted in between are buffered per session and delivered when it reconnects. See  <a href="server-to-client.html">Server to client</a>
+.</p>
+ </div>
+    </td>
+   </tr>
+      </tbody>
+  </table>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_linking_a_resource_from_a_tool">Linking a resource from a tool</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+A tool does not have to inline a big payload in its answer, it can point at a resource the client will read if it needs it:
+ </p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">return new ToolResponse(null, false, List.of(
+        Content.text(&quot;The report is ready.&quot;),
+        Content.resourceLink(&quot;app://reports/2025-01&quot;, &quot;report&quot;, &quot;text/markdown&quot;)), null);
+</code></pre>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_uri_conventions">Uri conventions</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>MCP does not impose a scheme. Use a stable, meaningful one - <code>app://</code>, <code> <a href="file://" class="inline-code">file://</a>
+</code>, <code>db://table/id</code> - because a uri is what a client stores when the user attaches a resource to a conversation. Templates should stay simple: one variable per path segment, no query string, so a client can offer completion on the variables (see  <a href="prompts.html">Completing the arguments</a>
+, with <code>ref.type()</code> being <code>ref/resource</code>).</p>
+ </div>
+ </div>
+ </div>
+                
+                <nav class="page-footer-nav" aria-label="Docs pages">
+    <a href="prompts.html" class="page-footer-nav-link-prev">
+    <div>Previous</div>
+    <div>Prompts</div>
+</a>
+    <a href="server-to-client.html" class="page-footer-nav-link-next">
+    <div>Next</div>
+    <div>Server to client</div>
+</a>
+</nav>
+            </div>
+        </div>
+<div class="page-navigation-right">
+        <h3>Navigation</h3>
+        <nav class="generated-nav-menu"></nav>
+    </div>
+    </div>
+<footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-social">
+                <ul class="social-list">
+                <li class="list-inline-item"><a title="Github" target="_blank"
+                            href="https://www.github.com/yupiik/fusion-mcp-server"><i class="fab fa-github
+                            fa-fw"></i></a></li>
+                </ul>
+            </div>
+            <nav class="footer-bar"><small class="copyright">© 2026 <strong><a href="https://www.yupiik.com">Yupiik</a></strong>.
+                        All Rights Reserved</small><a class="legal-link" href="https://www.yupiik.com/terms-of-use/">Terms of use</a><a class="legal-link" href="https://www.yupiik.com/privacy-policy/">Privacy policy</a></nav>
+        </div>
+    </footer>
+
+    <div class="modal" id="searchModal" role="dialog" aria-label="Search site">
+    <div class="modal-overlay" data-close-modal></div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-header">
+            <h5 class="modal-title">Search</h5>
+            <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input class="form-control" id="searchInput" placeholder="Search the docs..." autocomplete="off">
+            <div class="search-hits"></div>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/highlight.min.js" integrity="sha384-pZ4gLQJIEk/VKnGk59xUSQK8Ne/erZQR9cpnPXPLB9iN1tXsVkRVfHYGdFYrSkv1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/bash.min.js" integrity="sha384-efs9Q+5nnPiBO0WMrHtZ2b4ZbGnY0xWwGyXD6wEdpsx5FloMqm1cIVIKG1Bdvg40" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/json.min.js" integrity="sha384-NnOc9XV+udt/++RdhhzykFpOtc2D05945J+tYJKxgDKzBhgT/v7WDgIYAfP5LaSa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/dockerfile.min.js" integrity="sha384-0zNCDFuDropscQQX105Gh/3QcoGRmz/FNUFCljVEETiDYRYMhSEyRydgyjQTlgds" crossorigin="anonymous"></script>
+    <script>if (!(window.minisite || {}).skipHighlightJs) {
+        document.querySelectorAll('.page-content-body pre code').forEach(function (codeBlock) {
+            hljs.highlightElement(codeBlock);
+        });
+        function addCopyButtons(clipboard) {
+          document.querySelectorAll('.page-content-body pre').forEach(function (codeBlock) {
+            var button = document.createElement('button');
+            button.className = 'copy-code-button';
+            button.type = 'button';
+            button.setAttribute('aria-label', 'Copy code to clipboard');
+            button.innerHTML = '<svg class="copy-glyph" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"></rect><path d="M10.5 5.5v-1A2 2 0 0 0 8.5 2.5h-5A2 2 0 0 0 1.5 4.5v5a2 2 0 0 0 2 2h1"></path></svg>' +
+                '<svg class="copy-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5"></path></svg>';
+            button.addEventListener('click', function () {
+              clipboard.writeText(codeBlock.querySelector('code') ? codeBlock.querySelector('code').innerText : codeBlock.innerText).then(function () {
+                button.classList.add('is-copied');
+                button.blur();
+                setTimeout(function () { button.classList.remove('is-copied'); }, 2000);
+              }, function () {
+                button.classList.add('is-copied');
+                button.querySelector('.copy-check').style.stroke = 'var(--brand-purple)';
+              });
+            });
+            codeBlock.appendChild(button);
+          });
+        }
+        if (navigator && navigator.clipboard) {
+         addCopyButtons(navigator.clipboard);
+        } else {
+         var script = document.createElement('script');
+         script.src = '//cdnjs.cloudflare.com/ajax/libs/clipboard-polyfill/2.7.0/clipboard-polyfill.promise.js';
+         script.integrity = 'sha256-waClS2re9NUbXRsryKoof+F9qc1gjjIhc2eT7ZbIv94=';
+         script.crossOrigin = 'anonymous';
+         script.onload = function() {addCopyButtons(clipboard);};
+         document.body.appendChild(script);
+        }
+    }</script>
+    <script src="//yupiik.github.io/fusion-mcp-server/js/minisite.js?v=1.0.3-SNAPSHOT"></script>
+    <script>$('.page-content-body').generatedNavMenu();</script>
+    
+    
+
+<script>
+    (function () {
+        // theme toggle
+        var root = document.documentElement;
+        var toggle = document.getElementById('theme-toggle');
+        if (toggle) {
+            function currentDark() {
+                var stored = root.getAttribute('data-theme');
+                if (stored === 'light' || stored === 'dark') return stored === 'dark';
+                // no explicit attribute yet: follow the OS preference
+                return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+            toggle.addEventListener('click', function () {
+                var next = currentDark() ? 'light' : 'dark';
+                root.setAttribute('data-theme', next);
+                try { localStorage.setItem('yupiik-theme', next); } catch (e) {}
+            });
+        }
+        // search modal
+        var modal = document.getElementById('searchModal');
+        function openModal() { if (modal) modal.classList.add('open'); }
+        function closeModal() { if (modal) modal.classList.remove('open'); }
+        var sb = document.getElementById('search-button');
+        if (sb) sb.addEventListener('click', function (e) { e.preventDefault(); openModal(); });
+        if (modal) {
+            modal.addEventListener('click', function (e) { if (e.target.closest('[data-close-modal]')) closeModal(); });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+        }
+    })();
+</script>
+</body>
+</html>

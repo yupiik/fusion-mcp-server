@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Tools</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Expose a Yupiik Fusion application to any MCP client - tools are plain JSON-RPC
+                        methods.">
+    <meta name="author" content="Yupiik Minisite Generator">
+    <meta name="generator" content="Yupiik Minisite Generator">
+    
+    <link rel="shortcut icon" href="//yupiik.github.io/fusion-mcp-server/images/favicon.png">
+    <meta name="theme-color" content="#191b20" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#191b20" media="(prefers-color-scheme: light)">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="//yupiik.github.io/fusion-mcp-server/css/syntax-highlighting.css?v=1.0.3-SNAPSHOT">
+    <link id="theme-style" rel="stylesheet" href="//yupiik.github.io/fusion-mcp-server/css/theme.css?v=1.0.3-SNAPSHOT">
+    
+    
+<script>/* inline to avoid flicker */try{var t=localStorage.getItem('yupiik-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}</script>
+</head>
+<body>
+<header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <a class="brand-link" title="Home" href="//yupiik.github.io/fusion-mcp-server/index.html">
+                    <img class="brand-logo" src="//yupiik.github.io/fusion-mcp-server/images/logo.svg" alt="logo">
+                    <span class="brand-text">Fusion MCP Server<span class="brand-side">Documentation</span></span>
+                </a>
+            </div>
+            <div class="header-actions">
+                
+                <button class="icon-btn" id="search-button" type="button" title="Search" aria-label="Search">
+        <i class="fas fa-search" aria-hidden="true"></i>
+    </button>
+                
+				<ul class="social-list">
+				<li class="list-inline-item"><a title="Github" target="_blank"
+                            href="https://www.github.com/yupiik/fusion-mcp-server"><i class="fab fa-github
+                            fa-fw"></i></a></li>
+				</ul>
+				<button class="icon-btn" id="theme-toggle" type="button" title="Toggle theme" aria-label="Toggle theme">
+					<svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm0-16a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM6.34 4.93a1 1 0 1 1 1.41 1.41 1 1 0 0 1-1.41-1.41zm11.32 12.73a1 1 0 1 1 1.41 1.41 1 1 0 0 1-1.41-1.41zM4 11a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm16 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM4.93 17.66a1 1 0 1 1 1.41-1.41 1 1 0 0 1-1.41 1.41zm12.73-11.32a1 1 0 1 1 1.41-1.41 1 1 0 0 1-1.41 1.41z"/></svg>
+					<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+				</button>
+            </div>
+        </div>
+    </header>
+	<div class="page">
+<div class="page-navigation-left">
+    <h3 class="menu-label">Menu</h3>
+    <ul>
+<li>
+    <a title="Fusion MCP Server" href="//yupiik.github.io/fusion-mcp-server/index.html">
+        <i class="fas fa-play"></i>Overview
+    </a>
+</li><li>
+    <a title="MCP" href="//yupiik.github.io/fusion-mcp-server/mcp/index.html">
+        <i class="fas fa-wrench"></i>MCP
+    </a>
+</li><li>
+    <a title="Deployment" href="//yupiik.github.io/fusion-mcp-server/deployment/index.html">
+        <i class="fas fa-server"></i>Deployment
+    </a>
+</li><li>
+    <a title="Internals" href="//yupiik.github.io/fusion-mcp-server/internals/index.html">
+        <i class="fas fa-sitemap"></i>Internals
+    </a>
+</li>
+    </ul>
+</div>
+<div id="mcp-tools-html-container" class="container page-content mcp-tools-html ">
+            <div class="page-header">
+                <h1>Tools</h1>
+            </div>
+            <div class="page-content-body">
+                <div id="preamble">
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>A tool is what the model can decide to execute. Flag any Fusion JSON-RPC method with <code>@MCPTool</code>:</p>
+ </div>
+ </div>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@ApplicationScoped
+public class MyTools {
+    @MCPTool
+    @JsonRpc(value = &quot;my/tool&quot;, documentation = &quot;Converts an amount between two currencies.&quot;)
+    public Conversion convert(
+            @JsonRpcParam(required = true, documentation = &quot;The amount to convert.&quot;) final double amount,
+            @JsonRpcParam(required = true, documentation = &quot;Source currency, ISO 4217.&quot;) final String from,
+            @JsonRpcParam(documentation = &quot;Target currency, defaults to EUR.&quot;) final String to) {
+        return new Conversion(...);
+    }
+}
+</code></pre>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_what_the_client_sees">What the client sees</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p><code>tools/list</code> is built from the OpenRPC document the Fusion processor generates, so the descriptor is a projection of the signature:</p>
+ </div>
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 33%;">
+   <col style="width: 66%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+MCP attribute    </th>
+    <th class="tableblock halign-left">
+Comes from    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>name</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the <code>@JsonRpc</code> value.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>description</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the <code>@JsonRpc</code> <code>documentation</code> - this is what the model reads to decide to call the tool, write it for a model, not for a developer.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>inputSchema.properties</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the method parameters, in declaration order.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>inputSchema.properties.*.description</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the <code>@JsonRpcParam</code> <code>documentation</code>.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>inputSchema.required</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the parameters flagged <code>@JsonRpcParam(required = true)</code> and the primitives.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>outputSchema</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the returned type, when it is a JSON model.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ <div class="paragraph">
+ <p>
+For the example above:
+ </p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  &quot;name&quot;: &quot;my/tool&quot;,
+  &quot;title&quot;: &quot;my/tool&quot;,
+  &quot;description&quot;: &quot;Converts an amount between two currencies.&quot;,
+  &quot;inputSchema&quot;: {
+    &quot;type&quot;: &quot;object&quot;,
+    &quot;description&quot;: &quot;Input request for my/tool&quot;,
+    &quot;properties&quot;: {
+      &quot;amount&quot;: {&quot;type&quot;: &quot;number&quot;, &quot;description&quot;: &quot;The amount to convert.&quot;},
+      &quot;from&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;Source currency, ISO 4217.&quot;},
+      &quot;to&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;Target currency, defaults to EUR.&quot;}
+    },
+    &quot;required&quot;: [&quot;amount&quot;, &quot;from&quot;]
+  },
+  &quot;outputSchema&quot;: {&quot;type&quot;: &quot;object&quot;, &quot;properties&quot;: {&quot;...&quot;: {}}, &quot;required&quot;: []}
+}
+</code></pre>
+ </div>
+ </div>
+ <div class="admonitionblock note">
+  <table>
+    <tbody>
+     <tr>
+      <td class="icon">
+     <div class="title">NOTE</div>
+       </td>
+      <td class="content">
+ <div class="paragraph">
+ <p>descriptors are computed once at startup, so <code>tools/list</code> costs nothing and never triggers user code.</p>
+ </div>
+    </td>
+   </tr>
+      </tbody>
+  </table>
+ </div>
+ <div class="sect2">
+  <h3 id="_documenting_the_payloads">Documenting the payloads</h3>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>The parameter documentation stops at the parameter. To document the <strong>attributes</strong> of a model - a nested argument or the result - annotate its record components with <code>@Property</code>, which the Fusion processor puts in the generated schema:</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@JsonModel
+public record Query(
+        @Property(documentation = &quot;The text to search for, mandatory.&quot;)
+        String text,
+
+        @Property(documentation = &quot;Should approximate matches be returned too.&quot;)
+        boolean fuzzy) {
+}
+</code></pre>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>
+The model then reads a description for every field of the payload it has to build - and of the result it gets back - instead of a bare type. It costs one annotation and, like everything else here, it cannot drift from the code.
+ </p>
+ </div>
+ <div class="admonitionblock caution">
+  <table>
+    <tbody>
+     <tr>
+      <td class="icon">
+     <div class="title">CAUTION</div>
+       </td>
+      <td class="content">
+ <div class="paragraph">
+ <p><code>@Property(required = true)</code> only appends a sentence to the description, it does not mark the schema property as required. Express mandatory arguments with <code>@JsonRpcParam(required = true)</code>, which is what ends up in the schema <code>required</code> list.</p>
+ </div>
+    </td>
+   </tr>
+      </tbody>
+  </table>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_results">Results</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+The returned value is sent twice, on purpose:
+ </p>
+ </div>
+ <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p>as <code>structuredContent</code>, the typed result, validated by the client against <code>outputSchema</code>,</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p>as a <code>text</code> content block holding its JSON representation, for the models without structured output support.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ <div class="paragraph">
+ <p>Return a <code>ToolResponse</code> instead of your own model to control the content blocks:</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@MCPTool
+@JsonRpc(value = &quot;my/report&quot;, documentation = &quot;Builds the daily report.&quot;)
+public ToolResponse report() {
+    return ToolResponse.text(&quot;= Report&quot;, &quot;Everything is fine.&quot;);
+}
+</code></pre>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p><code>Content</code> covers every MCP content type - <code>text</code>, <code>image</code>, <code>audio</code>, <code>resource_link</code> and an embedded <code>resource</code>:</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">return new ToolResponse(null, false, List.of(
+        Content.text(&quot;Here is the chart you asked for:&quot;),
+        Content.image(&quot;image/png&quot;, pngBytes),
+        Content.resourceLink(&quot;app://reports/2025-01&quot;, &quot;report&quot;, &quot;text/markdown&quot;)), null);
+</code></pre>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_asynchronous_tools">Asynchronous tools</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>Return a <code>CompletionStage&lt;T&gt;</code>, which is the right thing to do for any tool doing I/O - the HTTP thread is not held:</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@MCPTool
+@JsonRpc(value = &quot;my/fetch&quot;, documentation = &quot;Fetches a document.&quot;)
+public CompletionStage&lt;Document&gt; fetch(@JsonRpcParam(required = true) final String id) {
+    return repository.findById(id);
+}
+</code></pre>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>The <code>outputSchema</code> describes <code>T</code>, i.e. what is actually sent on the wire.</p>
+ </div>
+ <div class="admonitionblock caution">
+  <table>
+    <tbody>
+     <tr>
+      <td class="icon">
+     <div class="title">CAUTION</div>
+       </td>
+      <td class="content">
+ <div class="paragraph">
+ <p>use <code>CompletionStage&lt;T&gt;</code>, not <code>CompletableFuture&lt;T&gt;</code>, and avoid <code>Optional&lt;T&gt;</code> - Fusion has no <code>Optional</code> JSON codec so such a result would not serialize.</p>
+ </div>
+    </td>
+   </tr>
+      </tbody>
+  </table>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_failures">Failures</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>Any exception is reported as a <strong>tool failure</strong>, not as a protocol error: the result carries <code>isError: true</code> and the message as a text block so the model can read it and react - retry, ask the user, give up:</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@MCPTool
+@JsonRpc(value = &quot;my/tool&quot;, documentation = &quot;...&quot;)
+public Result run(@JsonRpcParam(required = true) final String input) {
+    if (input.isBlank()) {
+        throw new IllegalArgumentException(&quot;input should not be blank&quot;); // -&gt; isError: true
+    }
+    ...
+}
+</code></pre>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Only an invalid <strong>call</strong> is a JSON-RPC error: unknown tool, missing or unbindable argument. Throw a <code>JsonRpcException</code> with a reserved code (<code>-32600</code> to <code>-32603</code>) to force that behavior.</p>
+ </div>
+ <div class="admonitionblock tip">
+  <table>
+    <tbody>
+     <tr>
+      <td class="icon">
+     <div class="title">TIP</div>
+       </td>
+      <td class="content">
+ <div class="paragraph">
+ <p>a failure message is read by a model, so make it actionable: <code>&quot;unknown customer id, list them with my/customers&quot;</code> beats <code>&quot;IllegalArgumentException&quot;</code>.</p>
+ </div>
+    </td>
+   </tr>
+      </tbody>
+  </table>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_reaching_the_session">Reaching the session</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>Declare a <code>Request</code> parameter - Fusion injects the HTTP request, it is not exposed to the model - then get the MCP session from it. This is how a tool logs, reports progress or asks something to the client:</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@MCPTool
+@JsonRpc(value = &quot;my/import&quot;, documentation = &quot;Imports a file.&quot;)
+public CompletionStage&lt;Report&gt; importFile(@JsonRpcParam(required = true) final String uri, final Request request) {
+    final var session = sessions.of(request); // MCPSessions is injected in the constructor
+    session.log(new MessageNotification(&quot;import&quot;, LoggingLevel.info, &quot;starting &quot; + uri));
+    return doImport(uri);
+}
+</code></pre>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>See  <a href="server-to-client.html">Server to client</a>
+ for logging, progress, sampling, elicitation and roots.</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_security">Security</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p><code>tools/call</code> only accepts the methods flagged with <code>@MCPTool</code>. Every other JSON-RPC method - including the MCP protocol ones and the plain methods of your application - is rejected with <code>-32602</code>, so exposing an application as a MCP server never exposes more than what is annotated.</p>
+ </div>
+ <div class="paragraph">
+ <p>Beyond that, treat a tool as a public HTTP endpoint: validate the arguments, and remember the model is driven by content it read somewhere, which may be hostile. Authentication and authorization are not MCP specific, use the regular Fusion HTTP means (a higher priority endpoint, a <code>BeforeRequest</code> listener, a reverse proxy).</p>
+ </div>
+ </div>
+ </div>
+                
+                <nav class="page-footer-nav" aria-label="Docs pages">
+    <a href="index.html" class="page-footer-nav-link-prev">
+    <div>Previous</div>
+    <div>MCP</div>
+</a>
+    <a href="prompts.html" class="page-footer-nav-link-next">
+    <div>Next</div>
+    <div>Prompts</div>
+</a>
+</nav>
+            </div>
+        </div>
+<div class="page-navigation-right">
+        <h3>Navigation</h3>
+        <nav class="generated-nav-menu"></nav>
+    </div>
+    </div>
+<footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-social">
+                <ul class="social-list">
+                <li class="list-inline-item"><a title="Github" target="_blank"
+                            href="https://www.github.com/yupiik/fusion-mcp-server"><i class="fab fa-github
+                            fa-fw"></i></a></li>
+                </ul>
+            </div>
+            <nav class="footer-bar"><small class="copyright">© 2026 <strong><a href="https://www.yupiik.com">Yupiik</a></strong>.
+                        All Rights Reserved</small><a class="legal-link" href="https://www.yupiik.com/terms-of-use/">Terms of use</a><a class="legal-link" href="https://www.yupiik.com/privacy-policy/">Privacy policy</a></nav>
+        </div>
+    </footer>
+
+    <div class="modal" id="searchModal" role="dialog" aria-label="Search site">
+    <div class="modal-overlay" data-close-modal></div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-header">
+            <h5 class="modal-title">Search</h5>
+            <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input class="form-control" id="searchInput" placeholder="Search the docs..." autocomplete="off">
+            <div class="search-hits"></div>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/highlight.min.js" integrity="sha384-pZ4gLQJIEk/VKnGk59xUSQK8Ne/erZQR9cpnPXPLB9iN1tXsVkRVfHYGdFYrSkv1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/bash.min.js" integrity="sha384-efs9Q+5nnPiBO0WMrHtZ2b4ZbGnY0xWwGyXD6wEdpsx5FloMqm1cIVIKG1Bdvg40" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/json.min.js" integrity="sha384-NnOc9XV+udt/++RdhhzykFpOtc2D05945J+tYJKxgDKzBhgT/v7WDgIYAfP5LaSa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/dockerfile.min.js" integrity="sha384-0zNCDFuDropscQQX105Gh/3QcoGRmz/FNUFCljVEETiDYRYMhSEyRydgyjQTlgds" crossorigin="anonymous"></script>
+    <script>if (!(window.minisite || {}).skipHighlightJs) {
+        document.querySelectorAll('.page-content-body pre code').forEach(function (codeBlock) {
+            hljs.highlightElement(codeBlock);
+        });
+        function addCopyButtons(clipboard) {
+          document.querySelectorAll('.page-content-body pre').forEach(function (codeBlock) {
+            var button = document.createElement('button');
+            button.className = 'copy-code-button';
+            button.type = 'button';
+            button.setAttribute('aria-label', 'Copy code to clipboard');
+            button.innerHTML = '<svg class="copy-glyph" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"></rect><path d="M10.5 5.5v-1A2 2 0 0 0 8.5 2.5h-5A2 2 0 0 0 1.5 4.5v5a2 2 0 0 0 2 2h1"></path></svg>' +
+                '<svg class="copy-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5"></path></svg>';
+            button.addEventListener('click', function () {
+              clipboard.writeText(codeBlock.querySelector('code') ? codeBlock.querySelector('code').innerText : codeBlock.innerText).then(function () {
+                button.classList.add('is-copied');
+                button.blur();
+                setTimeout(function () { button.classList.remove('is-copied'); }, 2000);
+              }, function () {
+                button.classList.add('is-copied');
+                button.querySelector('.copy-check').style.stroke = 'var(--brand-purple)';
+              });
+            });
+            codeBlock.appendChild(button);
+          });
+        }
+        if (navigator && navigator.clipboard) {
+         addCopyButtons(navigator.clipboard);
+        } else {
+         var script = document.createElement('script');
+         script.src = '//cdnjs.cloudflare.com/ajax/libs/clipboard-polyfill/2.7.0/clipboard-polyfill.promise.js';
+         script.integrity = 'sha256-waClS2re9NUbXRsryKoof+F9qc1gjjIhc2eT7ZbIv94=';
+         script.crossOrigin = 'anonymous';
+         script.onload = function() {addCopyButtons(clipboard);};
+         document.body.appendChild(script);
+        }
+    }</script>
+    <script src="//yupiik.github.io/fusion-mcp-server/js/minisite.js?v=1.0.3-SNAPSHOT"></script>
+    <script>$('.page-content-body').generatedNavMenu();</script>
+    
+    
+
+<script>
+    (function () {
+        // theme toggle
+        var root = document.documentElement;
+        var toggle = document.getElementById('theme-toggle');
+        if (toggle) {
+            function currentDark() {
+                var stored = root.getAttribute('data-theme');
+                if (stored === 'light' || stored === 'dark') return stored === 'dark';
+                // no explicit attribute yet: follow the OS preference
+                return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+            toggle.addEventListener('click', function () {
+                var next = currentDark() ? 'light' : 'dark';
+                root.setAttribute('data-theme', next);
+                try { localStorage.setItem('yupiik-theme', next); } catch (e) {}
+            });
+        }
+        // search modal
+        var modal = document.getElementById('searchModal');
+        function openModal() { if (modal) modal.classList.add('open'); }
+        function closeModal() { if (modal) modal.classList.remove('open'); }
+        var sb = document.getElementById('search-button');
+        if (sb) sb.addEventListener('click', function (e) { e.preventDefault(); openModal(); });
+        if (modal) {
+            modal.addEventListener('click', function (e) { if (e.target.closest('[data-close-modal]')) closeModal(); });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+        }
+    })();
+</script>
+</body>
+</html>

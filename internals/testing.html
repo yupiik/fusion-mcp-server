@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Testing</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Expose a Yupiik Fusion application to any MCP client - tools are plain JSON-RPC
+                        methods.">
+    <meta name="author" content="Yupiik Minisite Generator">
+    <meta name="generator" content="Yupiik Minisite Generator">
+    
+    <link rel="shortcut icon" href="//yupiik.github.io/fusion-mcp-server/images/favicon.png">
+    <meta name="theme-color" content="#191b20" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#191b20" media="(prefers-color-scheme: light)">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="//yupiik.github.io/fusion-mcp-server/css/syntax-highlighting.css?v=1.0.3-SNAPSHOT">
+    <link id="theme-style" rel="stylesheet" href="//yupiik.github.io/fusion-mcp-server/css/theme.css?v=1.0.3-SNAPSHOT">
+    
+    
+<script>/* inline to avoid flicker */try{var t=localStorage.getItem('yupiik-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}</script>
+</head>
+<body>
+<header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <a class="brand-link" title="Home" href="//yupiik.github.io/fusion-mcp-server/index.html">
+                    <img class="brand-logo" src="//yupiik.github.io/fusion-mcp-server/images/logo.svg" alt="logo">
+                    <span class="brand-text">Fusion MCP Server<span class="brand-side">Documentation</span></span>
+                </a>
+            </div>
+            <div class="header-actions">
+                
+                <button class="icon-btn" id="search-button" type="button" title="Search" aria-label="Search">
+        <i class="fas fa-search" aria-hidden="true"></i>
+    </button>
+                
+				<ul class="social-list">
+				<li class="list-inline-item"><a title="Github" target="_blank"
+                            href="https://www.github.com/yupiik/fusion-mcp-server"><i class="fab fa-github
+                            fa-fw"></i></a></li>
+				</ul>
+				<button class="icon-btn" id="theme-toggle" type="button" title="Toggle theme" aria-label="Toggle theme">
+					<svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm0-16a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM6.34 4.93a1 1 0 1 1 1.41 1.41 1 1 0 0 1-1.41-1.41zm11.32 12.73a1 1 0 1 1 1.41 1.41 1 1 0 0 1-1.41-1.41zM4 11a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm16 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM4.93 17.66a1 1 0 1 1 1.41-1.41 1 1 0 0 1-1.41 1.41zm12.73-11.32a1 1 0 1 1 1.41-1.41 1 1 0 0 1-1.41 1.41z"/></svg>
+					<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+				</button>
+            </div>
+        </div>
+    </header>
+	<div class="page">
+<div class="page-navigation-left">
+    <h3 class="menu-label">Menu</h3>
+    <ul>
+<li>
+    <a title="Fusion MCP Server" href="//yupiik.github.io/fusion-mcp-server/index.html">
+        <i class="fas fa-play"></i>Overview
+    </a>
+</li><li>
+    <a title="MCP" href="//yupiik.github.io/fusion-mcp-server/mcp/index.html">
+        <i class="fas fa-wrench"></i>MCP
+    </a>
+</li><li>
+    <a title="Deployment" href="//yupiik.github.io/fusion-mcp-server/deployment/index.html">
+        <i class="fas fa-server"></i>Deployment
+    </a>
+</li><li>
+    <a title="Internals" href="//yupiik.github.io/fusion-mcp-server/internals/index.html">
+        <i class="fas fa-sitemap"></i>Internals
+    </a>
+</li>
+    </ul>
+</div>
+<div id="internals-testing-html-container" class="container page-content internals-testing-html ">
+            <div class="page-header">
+                <h1>Testing</h1>
+            </div>
+            <div class="page-content-body">
+                <div id="preamble">
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p><code>MCPClient</code> is shipped in the main artifact - it has no test framework dependency - and drives a server the way a real client does: it runs the handshake, keeps the <code>Mcp-Session-Id</code> header across calls and reads the SSE channel.</p>
+ </div>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Every call returns a <code>CompletionStage</code>, which is what a MCP interaction needs: a tool using sampling or elicitation only answers once the client responded on the SSE channel, so its invocation cannot be awaited first.</p>
+ </div>
+ <div class="sect1">
+  <h2 id="_a_first_test">A first test</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>Combine it with <code>fusion-testing</code>, which starts the container and a server on a random port:</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@FusionSupport
+class MyToolsTest {
+    @Test
+    void call(@Fusion final URI mcpEndpoint, @Fusion final HttpClient http) {
+        try (final var client = new MCPClient(mcpEndpoint, http)) {
+            client.initialize().toCompletableFuture().join(); <b class="conum">(1)</b>
+
+            final var response = client.call(2, &quot;tools/call&quot;, &quot;&quot;&quot;
+                    {&quot;name&quot;: &quot;my/tool&quot;, &quot;arguments&quot;: {&quot;name&quot;: &quot;fusion&quot;}}&quot;&quot;&quot;) <b class="conum">(2)</b>
+                    .toCompletableFuture()
+                    .join();
+
+            assertEquals(200, response.statusCode());
+            assertJsonEquals(&quot;&quot;&quot;
+                    {
+                      &quot;jsonrpc&quot;: &quot;2.0&quot;,
+                      &quot;id&quot;: 2,
+                      &quot;result&quot;: {
+                        &quot;content&quot;: [{&quot;text&quot;: &quot;{\\&quot;greeting\\&quot;:\\&quot;hello fusion\\&quot;}&quot;, &quot;type&quot;: &quot;text&quot;}],
+                        &quot;isError&quot;: false,
+                        &quot;structuredContent&quot;: {&quot;greeting&quot;: &quot;hello fusion&quot;}
+                      }
+                    }&quot;&quot;&quot;, response.body()); <b class="conum">(3)</b>
+        }
+    }
+}
+</code></pre>
+ </div>
+ </div>
+ <div class="colist arabic">
+  <ol>
+   <li>
+<code>initialize</code> <span>
+ + 
+ </span>
+<code>notifications/initialized</code> <span>
+, and the session is kept for the next calls.
+ </span>
+   </li>
+   <li>
+<code>call(id, method, params)</code> <span>
+ sends a JSON-RPC request.
+ </span>
+   </li>
+   <li>
+<code>io.yupiik.fusion.testing.assertion.JsonAsserts#assertJsonEquals</code> <span>
+ compares formatted JSON, so the assertion reads like the wire.
+ </span>
+   </li>
+  </ol>
+ </div>
+ <div class="paragraph">
+ <p>The <code>URI</code> and <code>HttpClient</code> come from test beans - see <code>demo/src/test/java/.../test/TestBeans.java</code> and <code>RandomPort</code> in this repository for a two class setup binding the port to <code>0</code>.</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_the_api">The API</h2>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 40%;">
+   <col style="width: 60%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Method    </th>
+    <th class="tableblock halign-left">
+Sends    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>initialize(capabilities)</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the handshake, capturing the session id. <code>initialize()</code> declares no capability.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>call(id, method, params)</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+a JSON-RPC request.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>notify(method, params)</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+a notification, i.e. no id.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>respond(id, result)</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+a response to a request the server sent on the SSE channel.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>post(body)</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+any raw message, including a batch.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>openSse()</code> / <code>openSse(lastEventId)</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+opens the event stream, resuming it when an id is given.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>nextMessage(stream)</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the next server to client message, without the SSE framing.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>terminate()</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>DELETE /mcp</code>.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>session()</code> / <code>session(id)</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+reads or forces the session id, the latter being handy to test the invalid cases.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ <div class="paragraph">
+ <p>Parameters and bodies accept either a string - used as is, which keeps the JSON readable in a test - or any object, serialized with the <code>JsonMapper</code> given to the constructor:</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">try (final var client = new MCPClient(mcpEndpoint, http, jsonMapper)) { // @Fusion JsonMapper jsonMapper
+    client.initialize(Map.of(&quot;sampling&quot;, Map.of())).toCompletableFuture().join();
+    client.call(2, &quot;tools/call&quot;, Map.of(&quot;name&quot;, &quot;my/tool&quot;, &quot;arguments&quot;, Map.of(&quot;name&quot;, &quot;fusion&quot;)))
+            .toCompletableFuture()
+            .join();
+}
+</code></pre>
+ </div>
+ </div>
+ <div class="admonitionblock note">
+  <table>
+    <tbody>
+     <tr>
+      <td class="icon">
+     <div class="title">NOTE</div>
+       </td>
+      <td class="content">
+passing an object without a mapper fails immediately with an explicit message, it never sends a broken body.    </td>
+   </tr>
+      </tbody>
+  </table>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_asserting_the_descriptors">Asserting the descriptors</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>The most valuable test of a MCP server is often the descriptor one: it locks what the <strong>model</strong> reads.</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Test
+void listTools(@Fusion final URI mcpEndpoint, @Fusion final HttpClient http) {
+    try (final var client = new MCPClient(mcpEndpoint, http)) {
+        client.initialize().toCompletableFuture().join();
+        assertJsonEquals(&quot;&quot;&quot;
+                {
+                  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+                  &quot;id&quot;: 2,
+                  &quot;result&quot;: {&quot;tools&quot;: [{
+                    &quot;description&quot;: &quot;Greets someone by name.&quot;,
+                    &quot;inputSchema&quot;: {
+                      &quot;description&quot;: &quot;Input request for my/tool&quot;,
+                      &quot;properties&quot;: {&quot;name&quot;: {&quot;description&quot;: &quot;Who to greet.&quot;, &quot;type&quot;: &quot;string&quot;}},
+                      &quot;required&quot;: [&quot;name&quot;],
+                      &quot;type&quot;: &quot;object&quot;
+                    },
+                    &quot;name&quot;: &quot;my/tool&quot;,
+                    &quot;outputSchema&quot;: {&quot;properties&quot;: {&quot;greeting&quot;: {&quot;type&quot;: &quot;string&quot;}}, &quot;required&quot;: [], &quot;type&quot;: &quot;object&quot;},
+                    &quot;title&quot;: &quot;my/tool&quot;
+                  }]}
+                }&quot;&quot;&quot;, client.call(2, &quot;tools/list&quot;, &quot;{}&quot;).toCompletableFuture().join().body());
+    }
+}
+</code></pre>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Alternatively inject <code>DescriptorService</code> and assert on the model instead of the JSON:</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Test
+void onlyAnnotatedMethodsAreExposed(@Fusion final DescriptorService descriptors) {
+    assertEquals(List.of(&quot;my/tool&quot;), descriptors.tools().tools().stream().map(ListToolsResponse.Tool::name).toList());
+    assertFalse(descriptors.isTool(&quot;initialize&quot;));
+}
+</code></pre>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_notifications">Notifications</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>Open the stream and read the next message - the two compose. Messages are buffered, so publishing <strong>before</strong> opening is fine and makes the test deterministic:</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Test
+void logging(@Fusion final URI mcpEndpoint, @Fusion final HttpClient http, @Fusion final MCPNotifier notifier) {
+    try (final var client = new MCPClient(mcpEndpoint, http)) {
+        client.initialize().toCompletableFuture().join();
+        notifier.log(LoggingLevel.warning, &quot;test&quot;, &quot;hello sse!&quot;);
+
+        assertJsonEquals(&quot;&quot;&quot;
+                {
+                  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+                  &quot;method&quot;: &quot;notifications/message&quot;,
+                  &quot;params&quot;: {&quot;level&quot;: &quot;warning&quot;, &quot;logger&quot;: &quot;test&quot;, &quot;data&quot;: &quot;hello sse!&quot;}
+                }&quot;&quot;&quot;,
+                client.openSse().thenCompose(client::nextMessage).toCompletableFuture().join());
+    }
+}
+</code></pre>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_server_requests_the_full_round_trip">Server requests: the full round trip</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+A tool using sampling only completes once the client answered, so its call must not be awaited before the answer is sent - which is exactly what the asynchronous API expresses:
+ </p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Test
+void sampling(@Fusion final URI mcpEndpoint, @Fusion final HttpClient http) throws Exception {
+    try (final var client = new MCPClient(mcpEndpoint, http)) {
+        client.initialize(&quot;&quot;&quot;
+                {&quot;sampling&quot;: {}}&quot;&quot;&quot;).toCompletableFuture().join(); <b class="conum">(1)</b>
+
+        final var call = client.call(2, &quot;tools/call&quot;, &quot;&quot;&quot;
+                {&quot;name&quot;: &quot;my/ask&quot;, &quot;arguments&quot;: {&quot;question&quot;: &quot;how are you?&quot;}}&quot;&quot;&quot;); <b class="conum">(2)</b>
+
+        final var request = client.openSse().thenCompose(client::nextMessage).toCompletableFuture().join(); <b class="conum">(3)</b>
+        assertTrue(request.contains(&quot;\\&quot;method\\&quot;:\\&quot;sampling/createMessage\\&quot;&quot;), request);
+
+        client.respond(idOf(request), &quot;&quot;&quot;
+                {&quot;role&quot;: &quot;assistant&quot;, &quot;model&quot;: &quot;test-model&quot;,
+                 &quot;content&quot;: {&quot;type&quot;: &quot;text&quot;, &quot;text&quot;: &quot;fine, thanks!&quot;}}&quot;&quot;&quot;)
+                .toCompletableFuture()
+                .join(); <b class="conum">(4)</b>
+
+        assertTrue(call.toCompletableFuture().get(30, SECONDS).body().contains(&quot;fine, thanks!&quot;)); <b class="conum">(5)</b>
+    }
+}
+</code></pre>
+ </div>
+ </div>
+ <div class="colist arabic">
+  <ol>
+   <li>
+ <span>
+Declare the capability, else the tool fails fast with 
+ </span>
+<code>Client does not support 'sampling'</code> <span>
+.
+ </span>
+   </li>
+   <li>
+ <span>
+Not awaited: the tool is blocked on the client answer.
+ </span>
+   </li>
+   <li>
+ <span>
+The server request, read from the SSE channel; parse its 
+ </span>
+<code>id</code> <span>
+ to answer it.
+ </span>
+   </li>
+   <li>
+<code>respond(id, result)</code> <span>
+ posts the response on the same endpoint - it answers 
+ </span>
+<code>202</code> <span>
+.
+ </span>
+   </li>
+   <li>
+ <span>
+The tool result is now available.
+ </span>
+   </li>
+  </ol>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_transport_level_tests">Transport level tests</h2>
+ <div class="sectionbody">
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">client.initialize().toCompletableFuture().join();
+assertEquals(204, client.terminate().toCompletableFuture().join().statusCode());          // DELETE /mcp
+assertEquals(404, client.call(3, &quot;ping&quot;, &quot;{}&quot;).toCompletableFuture().join().statusCode()); // the session is gone
+
+new MCPClient(endpoint, http).session(&quot;made-up&quot;);   // force an invalid session id
+client.openSse(&quot;12&quot;);                               // resume from Last-Event-ID: 12
+client.post(&quot;[{...},{...}]&quot;);                       // a batch
+</code></pre>
+ </div>
+ </div>
+ <div class="admonitionblock tip">
+  <table>
+    <tbody>
+     <tr>
+      <td class="icon">
+     <div class="title">TIP</div>
+       </td>
+      <td class="content">
+ <div class="paragraph">
+ <p>this repository uses exactly that - <code>MCPJSONRPCProtocolTest</code> for the protocol, <code>MCPTransportTest</code> for the transport, <code>MCPClientTest</code> for the client and <code>DemoTest</code> for a real server. Read them as executable documentation.</p>
+ </div>
+    </td>
+   </tr>
+      </tbody>
+  </table>
+ </div>
+ </div>
+ </div>
+                
+                <nav class="page-footer-nav" aria-label="Docs pages">
+    <a href="design.html" class="page-footer-nav-link-prev">
+    <div>Previous</div>
+    <div>Design</div>
+</a>
+    <a href="demo.html" class="page-footer-nav-link-next">
+    <div>Next</div>
+    <div>Demo</div>
+</a>
+</nav>
+            </div>
+        </div>
+<div class="page-navigation-right">
+        <h3>Navigation</h3>
+        <nav class="generated-nav-menu"></nav>
+    </div>
+    </div>
+<footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-social">
+                <ul class="social-list">
+                <li class="list-inline-item"><a title="Github" target="_blank"
+                            href="https://www.github.com/yupiik/fusion-mcp-server"><i class="fab fa-github
+                            fa-fw"></i></a></li>
+                </ul>
+            </div>
+            <nav class="footer-bar"><small class="copyright">© 2026 <strong><a href="https://www.yupiik.com">Yupiik</a></strong>.
+                        All Rights Reserved</small><a class="legal-link" href="https://www.yupiik.com/terms-of-use/">Terms of use</a><a class="legal-link" href="https://www.yupiik.com/privacy-policy/">Privacy policy</a></nav>
+        </div>
+    </footer>
+
+    <div class="modal" id="searchModal" role="dialog" aria-label="Search site">
+    <div class="modal-overlay" data-close-modal></div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-header">
+            <h5 class="modal-title">Search</h5>
+            <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input class="form-control" id="searchInput" placeholder="Search the docs..." autocomplete="off">
+            <div class="search-hits"></div>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/highlight.min.js" integrity="sha384-pZ4gLQJIEk/VKnGk59xUSQK8Ne/erZQR9cpnPXPLB9iN1tXsVkRVfHYGdFYrSkv1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/bash.min.js" integrity="sha384-efs9Q+5nnPiBO0WMrHtZ2b4ZbGnY0xWwGyXD6wEdpsx5FloMqm1cIVIKG1Bdvg40" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/json.min.js" integrity="sha384-NnOc9XV+udt/++RdhhzykFpOtc2D05945J+tYJKxgDKzBhgT/v7WDgIYAfP5LaSa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/dockerfile.min.js" integrity="sha384-0zNCDFuDropscQQX105Gh/3QcoGRmz/FNUFCljVEETiDYRYMhSEyRydgyjQTlgds" crossorigin="anonymous"></script>
+    <script>if (!(window.minisite || {}).skipHighlightJs) {
+        document.querySelectorAll('.page-content-body pre code').forEach(function (codeBlock) {
+            hljs.highlightElement(codeBlock);
+        });
+        function addCopyButtons(clipboard) {
+          document.querySelectorAll('.page-content-body pre').forEach(function (codeBlock) {
+            var button = document.createElement('button');
+            button.className = 'copy-code-button';
+            button.type = 'button';
+            button.setAttribute('aria-label', 'Copy code to clipboard');
+            button.innerHTML = '<svg class="copy-glyph" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"></rect><path d="M10.5 5.5v-1A2 2 0 0 0 8.5 2.5h-5A2 2 0 0 0 1.5 4.5v5a2 2 0 0 0 2 2h1"></path></svg>' +
+                '<svg class="copy-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5"></path></svg>';
+            button.addEventListener('click', function () {
+              clipboard.writeText(codeBlock.querySelector('code') ? codeBlock.querySelector('code').innerText : codeBlock.innerText).then(function () {
+                button.classList.add('is-copied');
+                button.blur();
+                setTimeout(function () { button.classList.remove('is-copied'); }, 2000);
+              }, function () {
+                button.classList.add('is-copied');
+                button.querySelector('.copy-check').style.stroke = 'var(--brand-purple)';
+              });
+            });
+            codeBlock.appendChild(button);
+          });
+        }
+        if (navigator && navigator.clipboard) {
+         addCopyButtons(navigator.clipboard);
+        } else {
+         var script = document.createElement('script');
+         script.src = '//cdnjs.cloudflare.com/ajax/libs/clipboard-polyfill/2.7.0/clipboard-polyfill.promise.js';
+         script.integrity = 'sha256-waClS2re9NUbXRsryKoof+F9qc1gjjIhc2eT7ZbIv94=';
+         script.crossOrigin = 'anonymous';
+         script.onload = function() {addCopyButtons(clipboard);};
+         document.body.appendChild(script);
+        }
+    }</script>
+    <script src="//yupiik.github.io/fusion-mcp-server/js/minisite.js?v=1.0.3-SNAPSHOT"></script>
+    <script>$('.page-content-body').generatedNavMenu();</script>
+    
+    
+
+<script>
+    (function () {
+        // theme toggle
+        var root = document.documentElement;
+        var toggle = document.getElementById('theme-toggle');
+        if (toggle) {
+            function currentDark() {
+                var stored = root.getAttribute('data-theme');
+                if (stored === 'light' || stored === 'dark') return stored === 'dark';
+                // no explicit attribute yet: follow the OS preference
+                return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+            toggle.addEventListener('click', function () {
+                var next = currentDark() ? 'light' : 'dark';
+                root.setAttribute('data-theme', next);
+                try { localStorage.setItem('yupiik-theme', next); } catch (e) {}
+            });
+        }
+        // search modal
+        var modal = document.getElementById('searchModal');
+        function openModal() { if (modal) modal.classList.add('open'); }
+        function closeModal() { if (modal) modal.classList.remove('open'); }
+        var sb = document.getElementById('search-button');
+        if (sb) sb.addEventListener('click', function (e) { e.preventDefault(); openModal(); });
+        if (modal) {
+            modal.addEventListener('click', function (e) { if (e.target.closest('[data-close-modal]')) closeModal(); });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+        }
+    })();
+</script>
+</body>
+</html>

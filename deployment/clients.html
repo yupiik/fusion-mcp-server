@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Connecting a client</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Expose a Yupiik Fusion application to any MCP client - tools are plain JSON-RPC
+                        methods.">
+    <meta name="author" content="Yupiik Minisite Generator">
+    <meta name="generator" content="Yupiik Minisite Generator">
+    
+    <link rel="shortcut icon" href="//yupiik.github.io/fusion-mcp-server/images/favicon.png">
+    <meta name="theme-color" content="#191b20" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#191b20" media="(prefers-color-scheme: light)">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="//yupiik.github.io/fusion-mcp-server/css/syntax-highlighting.css?v=1.0.3-SNAPSHOT">
+    <link id="theme-style" rel="stylesheet" href="//yupiik.github.io/fusion-mcp-server/css/theme.css?v=1.0.3-SNAPSHOT">
+    
+    
+<script>/* inline to avoid flicker */try{var t=localStorage.getItem('yupiik-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}</script>
+</head>
+<body>
+<header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <a class="brand-link" title="Home" href="//yupiik.github.io/fusion-mcp-server/index.html">
+                    <img class="brand-logo" src="//yupiik.github.io/fusion-mcp-server/images/logo.svg" alt="logo">
+                    <span class="brand-text">Fusion MCP Server<span class="brand-side">Documentation</span></span>
+                </a>
+            </div>
+            <div class="header-actions">
+                
+                <button class="icon-btn" id="search-button" type="button" title="Search" aria-label="Search">
+        <i class="fas fa-search" aria-hidden="true"></i>
+    </button>
+                
+				<ul class="social-list">
+				<li class="list-inline-item"><a title="Github" target="_blank"
+                            href="https://www.github.com/yupiik/fusion-mcp-server"><i class="fab fa-github
+                            fa-fw"></i></a></li>
+				</ul>
+				<button class="icon-btn" id="theme-toggle" type="button" title="Toggle theme" aria-label="Toggle theme">
+					<svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm0-16a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM6.34 4.93a1 1 0 1 1 1.41 1.41 1 1 0 0 1-1.41-1.41zm11.32 12.73a1 1 0 1 1 1.41 1.41 1 1 0 0 1-1.41-1.41zM4 11a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm16 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM4.93 17.66a1 1 0 1 1 1.41-1.41 1 1 0 0 1-1.41 1.41zm12.73-11.32a1 1 0 1 1 1.41-1.41 1 1 0 0 1-1.41 1.41z"/></svg>
+					<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+				</button>
+            </div>
+        </div>
+    </header>
+	<div class="page">
+<div class="page-navigation-left">
+    <h3 class="menu-label">Menu</h3>
+    <ul>
+<li>
+    <a title="Fusion MCP Server" href="//yupiik.github.io/fusion-mcp-server/index.html">
+        <i class="fas fa-play"></i>Overview
+    </a>
+</li><li>
+    <a title="MCP" href="//yupiik.github.io/fusion-mcp-server/mcp/index.html">
+        <i class="fas fa-wrench"></i>MCP
+    </a>
+</li><li>
+    <a title="Deployment" href="//yupiik.github.io/fusion-mcp-server/deployment/index.html">
+        <i class="fas fa-server"></i>Deployment
+    </a>
+</li><li>
+    <a title="Internals" href="//yupiik.github.io/fusion-mcp-server/internals/index.html">
+        <i class="fas fa-sitemap"></i>Internals
+    </a>
+</li>
+    </ul>
+</div>
+<div id="deployment-clients-html-container" class="container page-content deployment-clients-html ">
+            <div class="page-header">
+                <h1>Connecting a client</h1>
+            </div>
+            <div class="page-content-body">
+                <div id="preamble">
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>This page is about the <strong>end user</strong> side: making a running server usable from a real MCP client, and understanding what the user and the model actually see.</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_start_a_server">Start a server</h2>
+ <div class="sectionbody">
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mvn package -pl demo exec:exec   # the demo of this repository, on http://localhost:8080/mcp
+</code></pre>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Any Fusion application embedding <code>fusion-mcp-server-impl</code> behaves the same, see  <a href="setup.html">Setup</a>
+.</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_claude_code">Claude Code</h2>
+ <div class="sectionbody">
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">claude mcp add --transport http demo http://localhost:8080/mcp
+</code></pre>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>
+or declare it in the project configuration:
+ </p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  &quot;mcpServers&quot;: {
+    &quot;demo&quot;: {
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;http://localhost:8080/mcp&quot;
+    }
+  }
+}
+</code></pre>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Then <code>/mcp</code> in the session lists the server, its tools and its prompts. A prompt shows up as a slash command, a resource can be attached with <code>@</code>.</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_claude_desktop_and_other_clients">Claude Desktop and other clients</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>Same declaration, in the client configuration file (<code>claude_desktop_config.json</code> for Claude Desktop):</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{&quot;mcpServers&quot;: {&quot;demo&quot;: {&quot;type&quot;: &quot;http&quot;, &quot;url&quot;: &quot;http://localhost:8080/mcp&quot;}}}
+</code></pre>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Clients which only support the stdio transport need a bridge - <code>npx mcp-remote http://localhost:8080/mcp</code> - since this server is HTTP only:</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  &quot;mcpServers&quot;: {
+    &quot;demo&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [&quot;-y&quot;, &quot;mcp-remote&quot;, &quot;http://localhost:8080/mcp&quot;]
+    }
+  }
+}
+</code></pre>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_mcp_inspector">MCP inspector</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+The reference debugging UI, it lists everything the server exposes and lets you call it by hand:
+ </p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">npx @modelcontextprotocol/inspector
+</code></pre>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Pick the <code>Streamable HTTP</code> transport and <code> <a href="http://localhost:8080/mcp" class="inline-code">http://localhost:8080/mcp</a>
+</code>. It is the fastest way to check a tool description and schema read well before letting a model use them.</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_by_hand_with_curl">By hand, with curl</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>Everything is plain JSON-RPC over HTTP, so <code>curl</code> is enough to explore or to script a smoke test:</p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">MCP=http://localhost:8080/mcp
+
+# initialize, keep the session id
+SID=$(curl -si -X POST $MCP -H 'content-type: application/json' \
+  -d '{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;initialize&quot;,&quot;params&quot;:{
+        &quot;protocolVersion&quot;:&quot;2025-06-18&quot;,&quot;capabilities&quot;:{},
+        &quot;clientInfo&quot;:{&quot;name&quot;:&quot;curl&quot;,&quot;version&quot;:&quot;1&quot;}}}' \
+  | grep -i mcp-session-id | tr -d '\r' | cut -d' ' -f2)
+
+post() { curl -s -X POST $MCP -H 'content-type: application/json' -H &quot;mcp-session-id: $SID&quot; -d &quot;$1&quot;; }
+
+post '{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;method&quot;:&quot;notifications/initialized&quot;}'
+post '{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;method&quot;:&quot;tools/list&quot;,&quot;params&quot;:{}}'
+post '{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:3,&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;name&quot;:&quot;demo/greet&quot;,&quot;arguments&quot;:{&quot;name&quot;:&quot;fusion&quot;}}}'
+post '{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:4,&quot;method&quot;:&quot;resources/read&quot;,&quot;params&quot;:{&quot;uri&quot;:&quot;demo://greeting&quot;}}'
+
+# watch what the server pushes
+curl -N $MCP -H 'accept: text/event-stream' -H &quot;mcp-session-id: $SID&quot;
+</code></pre>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_what_the_user_sees">What the user sees</h2>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 25%;">
+   <col style="width: 75%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Exposed as    </th>
+    <th class="tableblock halign-left">
+User experience    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Tool</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+invisible until the model decides to call it; the client then shows the tool name, the arguments and asks for a confirmation. The <code>description</code> is what drives that decision.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Prompt</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+an explicit entry - slash command, menu - with one input per argument, completed as the user types when a <code>MCPCompletions</code> bean answers.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Resource</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+something to attach to the conversation (<code>@</code> in most clients), listed by name and description.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Log record</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+in the client logs or its MCP panel, filtered by the level the user picked.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Sampling request</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+a confirmation dialog: the server is asking to use the user model, and possibly tokens.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Elicitation request</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+a form built from the requested schema.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_writing_for_a_model">Writing for a model</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>The <code>description</code> and the argument documentation are the <strong>interface</strong> with the model. What works:</p>
+ </div>
+ <div class="paragraph">
+delivery date.&quot;<code>, * name the arguments after domain concepts, and document their format: </code>&quot;ISO 4217 currency, EUR by default&quot;<code>, * make failures actionable: </code>&quot;unknown product id, list them with catalog/search&quot;<code> beats a stack trace, * keep the tool set small and orthogonal; ten precise tools beat one tool with a </code>mode` argument. </div>
+ <div class="paragraph">
+ <p>Check the result with the inspector or <code>tools/list</code>: what you read there is exactly what the model reads.</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_troubleshooting">Troubleshooting</h2>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 33%;">
+   <col style="width: 66%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Symptom    </th>
+    <th class="tableblock halign-left">
+Cause    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>404</code> with <code>Unknown or expired MCP session</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the session expired (<code>fusion.mcp.sessionTimeout</code>) or the server restarted; the client must <code>initialize</code> again.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>400</code> with <code>Unsupported mcp-protocol-version</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the client announces a version this server does not support, see  <a href="transport.html">Protocol negotiation</a>
+.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+A tool is missing from <code>tools/list</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the method is not annotated with <code>@MCPTool</code>, or incremental compilation hid it from the annotation processor - rebuild cleanly.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>-32602 Unknown tool</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the name is not a <code>@MCPTool</code> method; only annotated methods are callable.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The client receives no notification</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+it did not open the <code>GET /mcp</code> stream, or it does not send the session header back - see  <a href="transport.html">Stateless clients</a>
+.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>Client does not support 'sampling'</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the client did not declare the capability in <code>initialize</code>; degrade gracefully, see  <a href="../mcp/server-to-client.html">Server to client</a>
+.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+A tool answers <code>isError: true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the tool threw; this is by design so the model can react. The message is in the text content.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ <div class="paragraph">
+ <p>Enable the access log (<code>fusion.http-server.accessLog=true</code>) to see the MCP traffic, and set the client log level to <code>debug</code> through <code>logging/setLevel</code> to get everything the server logs.</p>
+ </div>
+ </div>
+ </div>
+                
+                <nav class="page-footer-nav" aria-label="Docs pages">
+    <a href="transport.html" class="page-footer-nav-link-prev">
+    <div>Previous</div>
+    <div>Transport</div>
+</a>
+    <a href="conformance.html" class="page-footer-nav-link-next">
+    <div>Next</div>
+    <div>Conformance</div>
+</a>
+</nav>
+            </div>
+        </div>
+<div class="page-navigation-right">
+        <h3>Navigation</h3>
+        <nav class="generated-nav-menu"></nav>
+    </div>
+    </div>
+<footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-social">
+                <ul class="social-list">
+                <li class="list-inline-item"><a title="Github" target="_blank"
+                            href="https://www.github.com/yupiik/fusion-mcp-server"><i class="fab fa-github
+                            fa-fw"></i></a></li>
+                </ul>
+            </div>
+            <nav class="footer-bar"><small class="copyright">© 2026 <strong><a href="https://www.yupiik.com">Yupiik</a></strong>.
+                        All Rights Reserved</small><a class="legal-link" href="https://www.yupiik.com/terms-of-use/">Terms of use</a><a class="legal-link" href="https://www.yupiik.com/privacy-policy/">Privacy policy</a></nav>
+        </div>
+    </footer>
+
+    <div class="modal" id="searchModal" role="dialog" aria-label="Search site">
+    <div class="modal-overlay" data-close-modal></div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-header">
+            <h5 class="modal-title">Search</h5>
+            <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input class="form-control" id="searchInput" placeholder="Search the docs..." autocomplete="off">
+            <div class="search-hits"></div>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/highlight.min.js" integrity="sha384-pZ4gLQJIEk/VKnGk59xUSQK8Ne/erZQR9cpnPXPLB9iN1tXsVkRVfHYGdFYrSkv1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/bash.min.js" integrity="sha384-efs9Q+5nnPiBO0WMrHtZ2b4ZbGnY0xWwGyXD6wEdpsx5FloMqm1cIVIKG1Bdvg40" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/json.min.js" integrity="sha384-NnOc9XV+udt/++RdhhzykFpOtc2D05945J+tYJKxgDKzBhgT/v7WDgIYAfP5LaSa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/dockerfile.min.js" integrity="sha384-0zNCDFuDropscQQX105Gh/3QcoGRmz/FNUFCljVEETiDYRYMhSEyRydgyjQTlgds" crossorigin="anonymous"></script>
+    <script>if (!(window.minisite || {}).skipHighlightJs) {
+        document.querySelectorAll('.page-content-body pre code').forEach(function (codeBlock) {
+            hljs.highlightElement(codeBlock);
+        });
+        function addCopyButtons(clipboard) {
+          document.querySelectorAll('.page-content-body pre').forEach(function (codeBlock) {
+            var button = document.createElement('button');
+            button.className = 'copy-code-button';
+            button.type = 'button';
+            button.setAttribute('aria-label', 'Copy code to clipboard');
+            button.innerHTML = '<svg class="copy-glyph" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"></rect><path d="M10.5 5.5v-1A2 2 0 0 0 8.5 2.5h-5A2 2 0 0 0 1.5 4.5v5a2 2 0 0 0 2 2h1"></path></svg>' +
+                '<svg class="copy-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5"></path></svg>';
+            button.addEventListener('click', function () {
+              clipboard.writeText(codeBlock.querySelector('code') ? codeBlock.querySelector('code').innerText : codeBlock.innerText).then(function () {
+                button.classList.add('is-copied');
+                button.blur();
+                setTimeout(function () { button.classList.remove('is-copied'); }, 2000);
+              }, function () {
+                button.classList.add('is-copied');
+                button.querySelector('.copy-check').style.stroke = 'var(--brand-purple)';
+              });
+            });
+            codeBlock.appendChild(button);
+          });
+        }
+        if (navigator && navigator.clipboard) {
+         addCopyButtons(navigator.clipboard);
+        } else {
+         var script = document.createElement('script');
+         script.src = '//cdnjs.cloudflare.com/ajax/libs/clipboard-polyfill/2.7.0/clipboard-polyfill.promise.js';
+         script.integrity = 'sha256-waClS2re9NUbXRsryKoof+F9qc1gjjIhc2eT7ZbIv94=';
+         script.crossOrigin = 'anonymous';
+         script.onload = function() {addCopyButtons(clipboard);};
+         document.body.appendChild(script);
+        }
+    }</script>
+    <script src="//yupiik.github.io/fusion-mcp-server/js/minisite.js?v=1.0.3-SNAPSHOT"></script>
+    <script>$('.page-content-body').generatedNavMenu();</script>
+    
+    
+
+<script>
+    (function () {
+        // theme toggle
+        var root = document.documentElement;
+        var toggle = document.getElementById('theme-toggle');
+        if (toggle) {
+            function currentDark() {
+                var stored = root.getAttribute('data-theme');
+                if (stored === 'light' || stored === 'dark') return stored === 'dark';
+                // no explicit attribute yet: follow the OS preference
+                return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+            toggle.addEventListener('click', function () {
+                var next = currentDark() ? 'light' : 'dark';
+                root.setAttribute('data-theme', next);
+                try { localStorage.setItem('yupiik-theme', next); } catch (e) {}
+            });
+        }
+        // search modal
+        var modal = document.getElementById('searchModal');
+        function openModal() { if (modal) modal.classList.add('open'); }
+        function closeModal() { if (modal) modal.classList.remove('open'); }
+        var sb = document.getElementById('search-button');
+        if (sb) sb.addEventListener('click', function (e) { e.preventDefault(); openModal(); });
+        if (modal) {
+            modal.addEventListener('click', function (e) { if (e.target.closest('[data-close-modal]')) closeModal(); });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+        }
+    })();
+</script>
+</body>
+</html>

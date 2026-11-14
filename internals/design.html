@@ -1,0 +1,6513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Design</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Expose a Yupiik Fusion application to any MCP client - tools are plain JSON-RPC
+                        methods.">
+    <meta name="author" content="Yupiik Minisite Generator">
+    <meta name="generator" content="Yupiik Minisite Generator">
+    
+    <link rel="shortcut icon" href="//yupiik.github.io/fusion-mcp-server/images/favicon.png">
+    <meta name="theme-color" content="#191b20" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#191b20" media="(prefers-color-scheme: light)">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="//yupiik.github.io/fusion-mcp-server/css/syntax-highlighting.css?v=1.0.3-SNAPSHOT">
+    <link id="theme-style" rel="stylesheet" href="//yupiik.github.io/fusion-mcp-server/css/theme.css?v=1.0.3-SNAPSHOT">
+    
+    
+<script>/* inline to avoid flicker */try{var t=localStorage.getItem('yupiik-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}</script>
+</head>
+<body>
+<header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <a class="brand-link" title="Home" href="//yupiik.github.io/fusion-mcp-server/index.html">
+                    <img class="brand-logo" src="//yupiik.github.io/fusion-mcp-server/images/logo.svg" alt="logo">
+                    <span class="brand-text">Fusion MCP Server<span class="brand-side">Documentation</span></span>
+                </a>
+            </div>
+            <div class="header-actions">
+                
+                <button class="icon-btn" id="search-button" type="button" title="Search" aria-label="Search">
+        <i class="fas fa-search" aria-hidden="true"></i>
+    </button>
+                
+				<ul class="social-list">
+				<li class="list-inline-item"><a title="Github" target="_blank"
+                            href="https://www.github.com/yupiik/fusion-mcp-server"><i class="fab fa-github
+                            fa-fw"></i></a></li>
+				</ul>
+				<button class="icon-btn" id="theme-toggle" type="button" title="Toggle theme" aria-label="Toggle theme">
+					<svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm0-16a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM6.34 4.93a1 1 0 1 1 1.41 1.41 1 1 0 0 1-1.41-1.41zm11.32 12.73a1 1 0 1 1 1.41 1.41 1 1 0 0 1-1.41-1.41zM4 11a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm16 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM4.93 17.66a1 1 0 1 1 1.41-1.41 1 1 0 0 1-1.41 1.41zm12.73-11.32a1 1 0 1 1 1.41-1.41 1 1 0 0 1-1.41 1.41z"/></svg>
+					<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+				</button>
+            </div>
+        </div>
+    </header>
+	<div class="page">
+<div class="page-navigation-left">
+    <h3 class="menu-label">Menu</h3>
+    <ul>
+<li>
+    <a title="Fusion MCP Server" href="//yupiik.github.io/fusion-mcp-server/index.html">
+        <i class="fas fa-play"></i>Overview
+    </a>
+</li><li>
+    <a title="MCP" href="//yupiik.github.io/fusion-mcp-server/mcp/index.html">
+        <i class="fas fa-wrench"></i>MCP
+    </a>
+</li><li>
+    <a title="Deployment" href="//yupiik.github.io/fusion-mcp-server/deployment/index.html">
+        <i class="fas fa-server"></i>Deployment
+    </a>
+</li><li>
+    <a title="Internals" href="//yupiik.github.io/fusion-mcp-server/internals/index.html">
+        <i class="fas fa-sitemap"></i>Internals
+    </a>
+</li>
+    </ul>
+</div>
+<div id="internals-design-html-container" class="container page-content internals-design-html ">
+            <div class="page-header">
+                <h1>Design</h1>
+            </div>
+            <div class="page-content-body">
+                <div id="preamble">
+ <div class="sectionbody">
+ <p> <div class="paragraph">
+ <p>
+This page is for contributors, and for anyone wanting to know what happens between an HTTP request and a tool call.
+ </p>
+ </div>
+</p>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_principle">Principle</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>MCP is JSON-RPC 2.0. Fusion already generates a complete JSON-RPC stack at build time, so the implementation is mostly <strong>wiring</strong> rather than protocol code:</p>
+ </div>
+ <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p>the MCP methods are plain <code>@JsonRpc</code> methods (<code>MCPJSONRPCProtocol</code>) registered in the same registry as the application ones,</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>tools/call</code> re-enters <code>JsonRpcHandler</code>, so a tool invocation follows the exact same code path as a direct JSON-RPC call - binding, validation, error mapping included,</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p>the descriptors come from the OpenRPC document the annotation processor writes in <code>META-INF/fusion/jsonrpc/openrpc.json</code>,</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p>only the <strong>transport</strong> is specific: sessions, SSE, headers, and the routing of client responses.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_class_map">Class map</h2>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 25%;">
+   <col style="width: 75%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Class    </th>
+    <th class="tableblock halign-left">
+Role    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>protocol.MCPEndpoint</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>POST /mcp</code>. Session resolution, protocol version validation, <code>202</code> for notifications, routing of client responses, then delegation to <code>JsonRpcHandler</code>.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>protocol.MCPSSEProtocol</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>GET /mcp</code> (the event stream, <code>Last-Event-ID</code> resumption) and <code>DELETE /mcp</code> (termination).</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>protocol.MCPJSONRPCProtocol</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+every MCP method, as <code>@JsonRpc</code> methods.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>protocol.MCPSession</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+one connection state: negotiated version, client capabilities, logging level, subscriptions, pending server requests, SSE queue. Also the API to talk to that client.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>protocol.MCPSessions</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the live sessions, their creation, lookup, expiration and the binding to the current request.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>protocol.SseBus</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the <code>text/event-stream</code> body: a demand aware, buffered queue of frames with a replay window.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>protocol.MCPProtocol</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+supported versions, header names, negotiation.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>service.OpenRpcService</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+loads and merges the OpenRPC documents, inlines their <code>$ref</code>s.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>service.DescriptorService</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+turns the JSON-RPC methods flagged <code>mcp.type</code> into <code>tools/list</code> and <code>prompts/list</code> results.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>api.*</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+what an application uses: <code>@MCPTool</code>, <code>@MCPPrompt</code>, <code>MCPResources</code>, <code>MCPCompletions</code>, <code>MCPNotifier</code>.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>model.*</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the wire model, one <code>@JsonModel</code> record per MCP structure, generated codecs.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>client.MCPClient</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+a minimal MCP client, shipped in the main artifact.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_a_tool_call_step_by_step">A tool call, step by step</h2>
+ <div class="sectionbody">
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">POST /mcp  {&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;name&quot;:&quot;my/tool&quot;,&quot;arguments&quot;:{...}}}
+ |
+ |-- MCPEndpoint                     read the body once, split requests / notifications / client responses
+ |     validate MCP-Protocol-Version -&gt; 400 if unsupported
+ |     resolve Mcp-Session-Id        -&gt; 404 if unknown, create it when the call is initialize
+ |     bind the session on the request attribute
+ |
+ |-- JsonRpcHandler.execute          the standard Fusion dispatch
+ |     |
+ |     |-- MCPJSONRPCProtocol#callTool
+ |           descriptors.isTool(name)  -&gt; -32602 when it is not an @MCPTool method
+ |           handler.execute({method: name, params: arguments})   nested, same stack
+ |             |
+ |             |-- the application method, bound and invoked by generated code
+ |           map the result: ToolResponse as is, else structuredContent + text block
+ |           map a failure: isError = true, unless the error code is a reserved JSON-RPC one
+ |
+ |-- MCPEndpoint                     write the JSON-RPC response (200), or 202 when there is nothing to answer
+</code></pre>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_decisions_worth_knowing">Decisions worth knowing</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p><strong>Own the <code>POST</code> endpoint.</strong> The Fusion JSON-RPC endpoint cannot express the MCP transport: session headers with their <code>400</code>/<code>404</code> semantics, <code>202</code> for notifications, and above all the client <strong>responses</strong> - a JSON-RPC message without <code>method</code>, which the standard validation rejects. <code>MCPEndpoint</code> is therefore registered with <code>@Order(900)</code>, before the Fusion one (<code>1000</code>), and delegates all the JSON-RPC work to the same handler. Bean lookups are sorted by ascending priority and the first matching endpoint wins, which makes the precedence deterministic.</p>
+ </div>
+ <div class="paragraph">
+ <p><strong>Descriptors computed once, at startup.</strong> Tools and prompts are known at build time, so <code>tools/list</code> is a constant. It also means <code>tools/list</code> never runs user code and cannot fail.</p>
+ </div>
+ <div class="paragraph">
+ <p><strong>An allow list for <code>tools/call</code>.</strong> Without it, <code>tools/call</code> would reach every JSON-RPC method of the application - and the MCP protocol methods themselves. Only <code>mcp.type=tool</code> methods are callable.</p>
+ </div>
+ <div class="paragraph">
+ <p><strong>Tool failures are results.</strong> The specification wants an execution failure inside the result (<code>isError: true</code>) so the model can read and react to it; only an invalid call is a JSON-RPC error. The frontier used here is the reserved code range (<code>-32700</code>, <code>-32600</code>..<code>-32603</code>).</p>
+ </div>
+ <div class="paragraph">
+ <p><strong>Merge all the OpenRPC documents.</strong> There is one per module using the processor - one for this library, one for the application - so reading a single classpath resource would drop the methods of every other module depending on the classpath order.</p>
+ </div>
+ <div class="paragraph">
+ <p><strong>Resources through a SPI, tools through annotations.</strong> Tools and prompts are code, known at build time; resources are data, discovered at runtime. Hence <code>@MCPTool</code>/<code>@MCPPrompt</code> on one side and the <code>MCPResources</code> bean on the other.</p>
+ </div>
+ <div class="paragraph">
+ <p><strong>Buffer the server to client messages.</strong> A tool can send a request before the client opens its stream, and a client can reconnect. <code>SseBus</code> therefore queues frames, respects the subscriber demand and keeps a replay window of 128 messages for <code>Last-Event-ID</code>.</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_notes_on_the_wire_model">Notes on the wire model</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>Every MCP structure is a <code>@JsonModel</code> record in <code>model</code>, so its codec is generated - no reflection, GraalVM friendly. Naming follows the specification: <code>XxxResponse</code> is a JSON-RPC <code>result</code>, <code>XxxParameters</code> a <code>params</code>, <code>XxxNotification</code> the <code>params</code> of a notification. Two pairs are easy to confuse and deliberately named after the specification: <code>Resource</code> (descriptor) versus <code>ResourceContents</code> (payload), and <code>Capabilities</code> (the client ones, in <code>initialize</code> params) versus <code>InitializeResponse.Capabilities</code> (the server ones).</p>
+ </div>
+ <div class="paragraph">
+ <p>Optionality is expressed the JSON-Schema way. The Fusion OpenRPC document flags each schema with <code>nullable</code>, MCP needs a <code>required</code> list on the enclosing object, and <code>DescriptorService</code> does that translation.</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_specification_coverage">Specification coverage</h2>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 40%;">
+   <col style="width: 20%;">
+   <col style="width: 40%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Feature    </th>
+    <th class="tableblock halign-left">
+Status    </th>
+    <th class="tableblock halign-left">
+Notes    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>initialize</code>, <code>notifications/initialized</code>, <code>ping</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+✅</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Version negotiation, session creation.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>tools/list</code>, <code>tools/call</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+✅</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+From <code>@MCPTool</code>, with <code>outputSchema</code> and <code>structuredContent</code>.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>prompts/list</code>, <code>prompts/get</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+✅</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+From <code>@MCPPrompt</code>.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>resources/list</code>, <code>read</code>, <code>templates/list</code>, <code>subscribe</code>, <code>unsubscribe</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+✅</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+From <code>MCPResources</code>.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>completion/complete</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+✅</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+From <code>MCPCompletions</code>.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>logging/setLevel</code>, <code>notifications/message</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+✅</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Per session filtering.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>notifications/*/list_changed</code>, <code>notifications/resources/updated</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+✅</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Through <code>MCPNotifier</code>.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>sampling/createMessage</code>, <code>elicitation/create</code>, <code>roots/list</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+✅</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Through <code>MCPSession</code>, correlated over the SSE channel.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>notifications/progress</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+✅</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Outgoing; incoming ones are accepted and ignored.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>notifications/cancelled</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+⚠️</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Accepted and logged; the running invocation is not interrupted.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Pagination (<code>nextCursor</code>)</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+⚠️</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Not needed: every listing is computed once and returned at once.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+HTTP+SSE transport (<code>2024-11-05</code>)</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+❌</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Superseded by the streamable HTTP one.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_known_limitations">Known limitations</h2>
+ <div class="sectionbody">
+ <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p>sessions live in memory: a clustered deployment needs sticky routing on the <code>Mcp-Session-Id</code> header,</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p>a tool returning <code>Optional&lt;T&gt;</code> has no usable <code>outputSchema</code> - and does not serialize either, Fusion has no <code>Optional</code> JSON codec - so return <code>T</code> or a <code>CompletionStage&lt;T&gt;</code>,</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p>Fusion &gt;= 1.0.38 is required: earlier releases describe an asynchronous result as a map of <code>T</code> in the generated OpenRPC document, which would make the <code>outputSchema</code> of every asynchronous tool wrong.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_json_rpc_reference_of_the_protocol_methods">JSON-RPC reference of the protocol methods</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>The MCP methods are plain <code>@JsonRpc</code> methods, so they end up in the OpenRPC document of the library like any other - this section is generated from it and therefore always matches what is deployed.</p>
+ </div>
+ <div class="paragraph">
+ <div class="sect2">
+  <h3 id="_methods">Methods</h3>
+ <div class="sectionbody">
+ <div class="sect3">
+  <h4 id="_completioncomplete">completion/complete</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Suggests values for a prompt argument or a resource template variable.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>argument</code> ( <a href="#io_yupiik_fusion_mcp_model_CompletionArgument"><code>CompletionArgument</code></a>
+): The argument being completed and its current value.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>context</code> ( <a href="#io_yupiik_fusion_mcp_model_CompletionContext"><code>CompletionContext</code></a>
+): The arguments already resolved.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>ref</code> ( <a href="#io_yupiik_fusion_mcp_model_CompletionRef"><code>CompletionRef</code></a>
+): What is completed: a prompt or a resource template.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Result:  <a href="#io_yupiik_fusion_mcp_model_CompleteResult"><code>CompleteResult</code></a>
+</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_initialize">initialize</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Negotiates the protocol version and returns the server capabilities.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>protocolVersion</code> (<code>string</code>): The protocol version the client wants to use.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>capabilities</code> ( <a href="#io_yupiik_fusion_mcp_model_Capabilities"><code>Capabilities</code></a>
+): What the client supports: roots, sampling, elicitation.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>clientInfo</code> ( <a href="#io_yupiik_fusion_mcp_model_ClientInfo"><code>ClientInfo</code></a>
+): Which client is connecting.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Result:  <a href="#io_yupiik_fusion_mcp_model_InitializeResponse"><code>InitializeResponse</code></a>
+</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_loggingsetlevel">logging/setLevel</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Sets the minimum severity of the log records sent to the client.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>level</code> (<code>string</code>): A syslog level name: debug, info, notice, warning, error, critical, alert or emergency.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>
+Result: object
+ </p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_notificationscancelled">notifications/cancelled</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+The client gave up on a request it sent.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>reason</code> (<code>string</code>): Why the request was cancelled.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>requestId</code> (object): The cancelled request id, a string or a number.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>
+Result: null
+ </p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_notificationsinitialized">notifications/initialized</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+The client is ready, the session can be used.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>_meta</code> ( <a href="#io_yupiik_fusion_mcp_model_Metadata"><code>Metadata</code></a>
+)</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>
+Result: null
+ </p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_notificationsprogress">notifications/progress</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Progress of a request the client sent to the server.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>message</code> (<code>string</code>)</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>progress</code> (number)</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>progressToken</code> (object)</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>total</code> (number)</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>
+Result: null
+ </p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_notificationsrootslist_changed">notifications/roots/list_changed</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+The client filesystem roots changed.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>_meta</code> ( <a href="#io_yupiik_fusion_mcp_model_Metadata"><code>Metadata</code></a>
+)</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>
+Result: null
+ </p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_ping">ping</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>Liveness check, see  <a href="https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/ping">https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/ping</a>
+.</p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>_meta</code> ( <a href="#io_yupiik_fusion_mcp_model_Metadata"><code>Metadata</code></a>
+)</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>
+Result: object
+ </p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_promptsget">prompts/get</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Expands a prompt template.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>name</code> (<code>string</code>): The prompt name, as returned by prompts/list.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>arguments</code> (object): The prompt arguments, all strings.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>inputResponses</code> (object): The answers to a previous input_required request, as top-level params.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>requestState</code> (<code>string</code>): The token to resume a previous input_required interaction.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>_meta</code> (object)</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Result:  <a href="#io_yupiik_fusion_mcp_model_MCPResult"><code>MCPResult</code></a>
+</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_promptslist">prompts/list</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Lists the prompt templates the user can pick.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>cursor</code> (<code>string</code>): Pagination cursor, unused: all the prompts are returned at once.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Result:  <a href="#io_yupiik_fusion_mcp_model_ListPromptsResponse"><code>ListPromptsResponse</code></a>
+</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_resourceslist">resources/list</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Lists the resources the client can read.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>cursor</code> (<code>string</code>): Pagination cursor, unused: all the resources are returned at once.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Result:  <a href="#io_yupiik_fusion_mcp_model_ListResourcesResponse"><code>ListResourcesResponse</code></a>
+</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_resourcesread">resources/read</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Reads the contents of a resource.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>uri</code> (<code>string</code>): The resource uri.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>_meta</code> (object)</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Result:  <a href="#io_yupiik_fusion_mcp_model_MCPResult"><code>MCPResult</code></a>
+</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_resourcessubscribe">resources/subscribe</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Asks to be notified when a resource changes.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>uri</code> (<code>string</code>): The resource uri to watch.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>
+Result: object
+ </p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_resourcestemplateslist">resources/templates/list</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Lists the parameterized resources the client can read.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>cursor</code> (<code>string</code>): Pagination cursor, unused: all the templates are returned at once.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Result:  <a href="#io_yupiik_fusion_mcp_model_ListResourceTemplatesResponse"><code>ListResourceTemplatesResponse</code></a>
+</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_resourcesunsubscribe">resources/unsubscribe</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Stops watching a resource.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>uri</code> (<code>string</code>): The resource uri to stop watching.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>
+Result: object
+ </p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_serverdiscover">server/discover</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+What this server supports over the stateless protocol, it replaces initialize for the stateless clients - no session is created.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>_meta</code> ( <a href="#io_yupiik_fusion_mcp_model_MCPRequestMetadata"><code>MCPRequestMetadata</code></a>
+)</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Result:  <a href="#io_yupiik_fusion_mcp_model_ServerDiscoverResponse"><code>ServerDiscoverResponse</code></a>
+</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_subscriptionscancel">subscriptions/cancel</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Closes the server to client stream opened by subscriptions/listen.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>_meta</code> (object)</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>
+Result: object
+ </p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_subscriptionslisten">subscriptions/listen</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Opens the server to client stream of the stateless protocol, it stays open until the client calls subscriptions/cancel.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>notifications</code> ( <a href="#io_yupiik_fusion_mcp_model_SubscriptionFilter"><code>SubscriptionFilter</code></a>
+)</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>_meta</code> (object)</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>
+Result: object
+ </p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_taskscancel">tasks/cancel</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Signals the cancellation of a long-running task; cancellation is cooperative.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>taskId</code> (<code>string</code>): The task identifier.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>
+Result: object
+ </p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_tasksget">tasks/get</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Polls the current state of a long-running task of the tasks extension.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>taskId</code> (<code>string</code>): The task identifier.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Result:  <a href="#io_yupiik_fusion_mcp_model_Task"><code>Task</code></a>
+</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_taskslist">tasks/list</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Lists the live long-running tasks of the tasks extension.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>cursor</code> (<code>string</code>): Pagination cursor, unused: all the tasks are returned at once.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Result:  <a href="#io_yupiik_fusion_mcp_model_ListTasksResponse"><code>ListTasksResponse</code></a>
+</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_tasksupdate">tasks/update</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Answers the input requests a task is blocked on, acknowledged with an empty result.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>taskId</code> (<code>string</code>): The task identifier.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>inputResponses</code> (object): The answers to the task outstanding input requests.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>
+Result: object
+ </p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_toolscall">tools/call</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Calls a tool.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>name</code> (<code>string</code>): The tool name, as returned by tools/list.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>arguments</code> (object): The tool arguments, they must match its inputSchema.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>inputResponses</code> (object): The responses to a previous input_required request, as top-level params.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>requestState</code> (<code>string</code>): The token to resume a previous input_required interaction.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>_meta</code> (object)</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Result:  <a href="#io_yupiik_fusion_mcp_model_MCPResult"><code>MCPResult</code></a>
+</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="_toolslist">tools/list</h4>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Parameter structure: either.
+ </p>
+ </div>
+ <div class="paragraph">
+ <p>
+Lists the tools the model can call.
+ </p>
+ </div>
+ <div class="paragraph">
+Parameters: <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>cursor</code> (<code>string</code>): Pagination cursor, unused: all the tools are returned at once.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>Result:  <a href="#io_yupiik_fusion_mcp_model_ListToolsResponse"><code>ListToolsResponse</code></a>
+</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="sect2">
+  <h3 id="_schemas">Schemas</h3>
+ <div class="sectionbody">
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_Annotations">Annotations (io.yupiik.fusion.mcp.model.Annotations) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>audience</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type <code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Who the annotated object is intended for.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>lastModified</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+When the annotated object was modified for the last time, ISO-8601.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>priority</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+How important the annotated object is, from 0 (least) to 1 (most).</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_Capabilities">Capabilities (io.yupiik.fusion.mcp.model.Capabilities) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>elicitation</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the client can ask its user for a structured input.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>experimental</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Non standard capabilities, keyed by name.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>extensions</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional MCP extensions the client supports, keyed by extension identifier.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>roots</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Capabilities.Roots</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the client exposes filesystem roots.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>sampling</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the client can run a LLM completion for the server.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_Capabilities_Roots">Roots (io.yupiik.fusion.mcp.model.Capabilities.Roots) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>listChanged</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>boolean</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the client notifies the server the list changed.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_ClientInfo">ClientInfo (io.yupiik.fusion.mcp.model.ClientInfo) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>name</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Programmatic name of the client.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>title</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Human oriented name of the client.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>version</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Version of the client.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_CompleteResult">CompleteResult (io.yupiik.fusion.mcp.model.CompleteResult) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>_meta</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Metadata</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional free form metadata.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>completion</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.CompleteResult.Completion</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The suggestions for the argument being completed.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>resultType</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+enum with potential values <code>complete</code>, <code>error</code>, <code>input_required</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The type of this result, see the {@code 2026-07-28} specification.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_CompleteResult_Completion">Completion (io.yupiik.fusion.mcp.model.CompleteResult.Completion) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>hasMore</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>boolean</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when more values exist than the ones returned.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>total</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Total amount of matching values.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>values</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type <code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The suggested values, at most 100.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_CompletionArgument">CompletionArgument (io.yupiik.fusion.mcp.model.CompletionArgument) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>name</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Name of the argument being completed.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>value</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+What the user typed so far, possibly empty.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_CompletionContext">CompletionContext (io.yupiik.fusion.mcp.model.CompletionContext) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>arguments</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The arguments already resolved, by name, to enable dependent completions.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_CompletionRef">CompletionRef (io.yupiik.fusion.mcp.model.CompletionRef) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>name</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Prompt name, when completing a prompt argument.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>title</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Human oriented name of the prompt.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>type</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Either ref/prompt or ref/resource.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>uri</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Resource template uri, when completing a template variable.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_Content">Content (io.yupiik.fusion.mcp.model.Content) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>_meta</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Metadata</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional free form metadata.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>annotations</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Annotations</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional hints for the client.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>content</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type object of type <code>io.yupiik.fusion.mcp.model.Content</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The result blocks, for a tool_result block.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>data</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The base64 encoded payload, for an image or audio block.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>description</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+What the linked resource contains.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>id</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The unique identifier of the tool use, for a tool_use block.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>input</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The arguments of the tool call, for a tool_use block.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>isError</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>boolean</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the tool call failed, for a tool_result block.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>mimeType</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Mime type of the payload.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>name</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Programmatic name of the linked resource.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>resource</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.ResourceContents</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The embedded resource contents, for a resource block.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>size</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Size of the linked resource in bytes, when known.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>text</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The text, for a text block.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>title</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Human oriented name of the linked resource.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>toolUseId</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The identifier of the tool_use this result answers, for a tool_result block.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>type</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+enum with potential values <code>text</code>, <code>image</code>, <code>audio</code>, <code>resource_link</code>, <code>resource</code>, <code>tool_use</code>, <code>tool_result</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Which kind of content this block carries.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>uri</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Uri of the linked resource, for a resource_link block.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_Icon">Icon (io.yupiik.fusion.mcp.model.Icon) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>mimeType</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The MIME type of the icon image.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>sizes</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type <code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The display sizes this icon is rendered for.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>src</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The URI of the icon, https: or a base64 data: URI.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>theme</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+enum with potential values <code>light</code>, <code>dark</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Which theme this icon is meant for.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_InitializeResponse">InitializeResponse (io.yupiik.fusion.mcp.model.InitializeResponse) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>capabilities</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.InitializeResponse.Capabilities</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+What this server can do.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>instructions</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+How the model should use this server.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>protocolVersion</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The negotiated protocol version.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>serverInfo</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.InitializeResponse.ServerInfo</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Which server is answering.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_InitializeResponse_Capabilities">Capabilities (io.yupiik.fusion.mcp.model.InitializeResponse.Capabilities) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>completions</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the server can suggest argument values.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>experimental</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Non standard capabilities, keyed by name.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>logging</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the server can send log records.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>prompts</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.InitializeResponse.Prompts</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the server exposes prompts.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>resources</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.InitializeResponse.Resources</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the server exposes resources.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>tools</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.InitializeResponse.Tools</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the server exposes tools.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_InitializeResponse_Prompts">Prompts (io.yupiik.fusion.mcp.model.InitializeResponse.Prompts) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>listChanged</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>boolean</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the server notifies the client the prompt list changed.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_InitializeResponse_Resources">Resources (io.yupiik.fusion.mcp.model.InitializeResponse.Resources) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>listChanged</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>boolean</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the server notifies the client the resource list changed.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>subscribe</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>boolean</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the client can subscribe to the changes of a single resource.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_InitializeResponse_ServerInfo">ServerInfo (io.yupiik.fusion.mcp.model.InitializeResponse.ServerInfo) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>name</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Programmatic name of the server.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>title</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Human oriented name of the server.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>version</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Version of the server.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_InitializeResponse_Tools">Tools (io.yupiik.fusion.mcp.model.InitializeResponse.Tools) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>listChanged</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>boolean</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the server notifies the client the tool list changed.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_JsonSchema">JsonSchema (io.yupiik.fusion.mcp.model.JsonSchema) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>$anchor</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Plain-name fragment identifier inside the schema.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>$defs</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Named reusable definitions, e.g. an address.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>$ref</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Reference to a definition in {@code $defs}.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>$schema</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The JSON-Schema dialect, 2020-12 when absent.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>additionalProperties</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Either a boolean or the schema of the free form properties.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>allOf</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type object of type <code>io.yupiik.fusion.mcp.model.JsonSchema</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Sub-schemas that must all validate.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>anyOf</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type object of type <code>io.yupiik.fusion.mcp.model.JsonSchema</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Sub-schemas, at least one of which must validate.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>const</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+A literal value the instance must equal.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>default</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Value used when the property is absent.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>description</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+What the described value means.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>else</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.JsonSchema</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Schema applied when the conditional schema does not validate.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>enum</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type <code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The closed set of allowed values.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>enumNames</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type <code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Human oriented labels of the allowed values, same order.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>format</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Semantic format of a string, date-time for example.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>if</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.JsonSchema</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Conditional schema.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>items</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.JsonSchema</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Schema of the items, for an array.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>maxLength</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Maximum length of a string.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>maximum</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Maximum value of a number.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>minLength</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Minimum length of a string.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>minimum</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Minimum value of a number.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>not</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.JsonSchema</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Schema the value must not validate against.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>oneOf</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type object of type <code>io.yupiik.fusion.mcp.model.JsonSchema</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Sub-schemas, exactly one of which must validate.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>pattern</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Regular expression a string must match.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>properties</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The properties, by name, for an object.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>required</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type <code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Names of the mandatory properties.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>then</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.JsonSchema</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Schema applied when the conditional schema validates.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>title</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Human oriented name of the schema.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>type</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+JSON-Schema type: object, array, string, integer, number or boolean.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>x-mcp-header</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Transport hint: the parameter can be sent through the Mcp-Param-&lt;suffix&gt; header.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_ListPromptsResponse">ListPromptsResponse (io.yupiik.fusion.mcp.model.ListPromptsResponse) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>_meta</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Metadata</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional free form metadata.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>cacheScope</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The scope the client may share this cache entry at.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>nextCursor</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Cursor to pass to the next call, absent when everything was returned.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>prompts</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type object of type <code>io.yupiik.fusion.mcp.model.ListPromptsResponse.Prompt</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The available prompts.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>resultType</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+enum with potential values <code>complete</code>, <code>error</code>, <code>input_required</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The type of this result, see the {@code 2026-07-28} specification.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>ttlMs</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+How long, in milliseconds, the client may cache this result.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_ListPromptsResponse_Prompt">Prompt (io.yupiik.fusion.mcp.model.ListPromptsResponse.Prompt) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>_meta</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Metadata</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional free form metadata.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>arguments</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type object of type <code>io.yupiik.fusion.mcp.model.ListPromptsResponse.Prompt.Argument</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The arguments the prompt takes, all strings.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>description</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+What the prompt is for.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>icons</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type object of type <code>io.yupiik.fusion.mcp.model.Icon</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional visual identifiers for the prompt.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>name</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Programmatic name of the prompt, what prompts/get takes.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>title</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Human oriented name of the prompt.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_ListPromptsResponse_Prompt_Argument">Argument (io.yupiik.fusion.mcp.model.ListPromptsResponse.Prompt.Argument) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>description</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+What the argument is for.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>name</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Programmatic name of the argument, the key to pass to prompts/get.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>required</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>boolean</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the argument must be provided.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>title</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Human oriented name of the argument.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_ListResourcesResponse">ListResourcesResponse (io.yupiik.fusion.mcp.model.ListResourcesResponse) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>_meta</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Metadata</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional free form metadata.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>cacheScope</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The scope the client may share this cache entry at.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>nextCursor</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Cursor to pass to the next call, absent when everything was returned.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>resources</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type object of type <code>io.yupiik.fusion.mcp.model.Resource</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The available resources.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>resultType</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+enum with potential values <code>complete</code>, <code>error</code>, <code>input_required</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The type of this result, see the {@code 2026-07-28} specification.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>ttlMs</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+How long, in milliseconds, the client may cache this result.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_ListResourceTemplatesResponse">ListResourceTemplatesResponse (io.yupiik.fusion.mcp.model.ListResourceTemplatesResponse) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>_meta</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Metadata</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional free form metadata.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>cacheScope</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The scope the client may share this cache entry at.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>nextCursor</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Cursor to pass to the next call, absent when everything was returned.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>resourceTemplates</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type object of type <code>io.yupiik.fusion.mcp.model.ResourceTemplate</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The available parameterized resources.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>resultType</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+enum with potential values <code>complete</code>, <code>error</code>, <code>input_required</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The type of this result, see the {@code 2026-07-28} specification.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>ttlMs</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+How long, in milliseconds, the client may cache this result.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_ListTasksResponse">ListTasksResponse (io.yupiik.fusion.mcp.model.ListTasksResponse) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>metadata</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional free form metadata.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>resultType</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+enum with potential values <code>complete</code>, <code>error</code>, <code>input_required</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The type of this result, see the {@code 2026-07-28} specification.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>tasks</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type object of type <code>io.yupiik.fusion.mcp.model.Task</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The live tasks.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_ListToolsResponse">ListToolsResponse (io.yupiik.fusion.mcp.model.ListToolsResponse) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>_meta</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Metadata</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional free form metadata.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>cacheScope</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The scope the client may share this cache entry at.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>nextCursor</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Cursor to pass to the next call, absent when everything was returned.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>resultType</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+enum with potential values <code>complete</code>, <code>error</code>, <code>input_required</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The type of this result, see the {@code 2026-07-28} specification.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>tools</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type object of type <code>io.yupiik.fusion.mcp.model.ListToolsResponse.Tool</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The callable tools.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>ttlMs</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+How long, in milliseconds, the client may cache this result.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_ListToolsResponse_Tool">Tool (io.yupiik.fusion.mcp.model.ListToolsResponse.Tool) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>_meta</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Metadata</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional free form metadata.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>annotations</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Annotations</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional hints for the client.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>description</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+What the tool does, this is what the model reads to decide to call it.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>icons</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type object of type <code>io.yupiik.fusion.mcp.model.Icon</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional visual identifiers for the tool.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>inputSchema</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.JsonSchema</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Schema of the arguments.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>name</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Programmatic name of the tool, what tools/call takes.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>outputSchema</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.JsonSchema</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Schema of the structured result, absent when there is none.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>title</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Human oriented name of the tool.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_MCPRequestMetadata">MCPRequestMetadata (io.yupiik.fusion.mcp.model.MCPRequestMetadata) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>io.modelcontextprotocol/clientCapabilities</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Capabilities</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+-</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>io.modelcontextprotocol/clientInfo</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.ClientInfo</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+-</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>io.modelcontextprotocol/inputResponses</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+-</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>io.modelcontextprotocol/logLevel</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+enum with potential values <code>alert</code>, <code>critical</code>, <code>debug</code>, <code>emergency</code>, <code>error</code>, <code>info</code>, <code>notice</code>, <code>warning</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+-</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>io.modelcontextprotocol/progressToken</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+-</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>io.modelcontextprotocol/protocolVersion</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+-</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>io.modelcontextprotocol/requestState</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+-</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>io.modelcontextprotocol/subscriptionId</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+-</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_MCPResult">MCPResult (io.yupiik.fusion.mcp.model.MCPResult) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>_meta</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Metadata</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional free form metadata.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>cacheScope</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The scope the client may share this cache entry at.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>content</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type object of type <code>io.yupiik.fusion.mcp.model.Content</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The tool content blocks, what a model without structured output support reads.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>contents</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type object of type <code>io.yupiik.fusion.mcp.model.ResourceContents</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The contents of a resource, a single uri can expand to several.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>description</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+What an expanded prompt is about.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>inputRequests</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The requests the client must run to feed this result, keyed by their method.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>isError</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>boolean</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the tool failed, the model is expected to read the error.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>messages</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type object of type <code>io.yupiik.fusion.mcp.model.PromptResponse.Message</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The messages a prompt expands to.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>requestState</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The token the client must echo with its next invocation to resume the interaction.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>resultType</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+enum with potential values <code>complete</code>, <code>error</code>, <code>input_required</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The type of this result, see the {@code 2026-07-28} specification.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>structuredContent</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The structured tool result, it must match the tool outputSchema when there is one.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>ttlMs</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+How long, in milliseconds, the client may cache this result.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_Metadata">Metadata (io.yupiik.fusion.mcp.model.Metadata) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>name</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Reserved name attribute.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>others</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Every other attribute, this object being free form.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>title</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Reserved title attribute.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_PromptResponse_Message">Message (io.yupiik.fusion.mcp.model.PromptResponse.Message) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>content</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The message content, a single block or an array of blocks.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>role</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+enum with potential values <code>user</code>, <code>assistant</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Who the message comes from.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_Resource">Resource (io.yupiik.fusion.mcp.model.Resource) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>_meta</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Metadata</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional free form metadata.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>annotations</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Annotations</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional hints for the client.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>description</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+What the resource contains.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>icons</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type object of type <code>io.yupiik.fusion.mcp.model.Icon</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional visual identifiers for the resource.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>mimeType</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Mime type of the resource, when known.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>name</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Programmatic name of the resource.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>size</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Size in bytes, when known.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>title</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Human oriented name of the resource.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>uri</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Uri of the resource, what resources/read takes.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_ResourceContents">ResourceContents (io.yupiik.fusion.mcp.model.ResourceContents) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>_meta</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Metadata</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional free form metadata.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>blob</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The base64 encoded content when it is binary, exclusive with text.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>mimeType</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Mime type of the content.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>text</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The content when it is textual, exclusive with blob.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>uri</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Uri of the resource.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_ResourceTemplate">ResourceTemplate (io.yupiik.fusion.mcp.model.ResourceTemplate) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>_meta</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Metadata</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional free form metadata.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>annotations</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Annotations</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional hints for the client.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>description</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+What the resources this template generates contain.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>mimeType</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Mime type of the generated resources, when constant.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>name</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Programmatic name of the template.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>title</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Human oriented name of the template.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>uriTemplate</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+A RFC 6570 uri template,  <a href="file:///logs/">file:///logs/</a>
+{name}.log for example.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_ServerCapabilities">ServerCapabilities (io.yupiik.fusion.mcp.model.ServerCapabilities) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>completions</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the server can suggest argument values.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>experimental</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Non standard capabilities, keyed by name.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>extensions</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional MCP extensions the server supports, keyed by extension identifier.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>logging</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the server can send log records.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>prompts</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.ServerCapabilities.Prompts</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the server exposes prompts.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>resources</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.ServerCapabilities.Resources</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the server exposes resources.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>tools</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.ServerCapabilities.Tools</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the server exposes tools.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_ServerCapabilities_Prompts">Prompts (io.yupiik.fusion.mcp.model.ServerCapabilities.Prompts) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>listChanged</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>boolean</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the server notifies the client the prompt list changed.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_ServerCapabilities_Resources">Resources (io.yupiik.fusion.mcp.model.ServerCapabilities.Resources) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>listChanged</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>boolean</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the server notifies the client the resource list changed.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>subscribe</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>boolean</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the client can subscribe to the changes of a single resource.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_ServerCapabilities_Tools">Tools (io.yupiik.fusion.mcp.model.ServerCapabilities.Tools) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>listChanged</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>boolean</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the server notifies the client the tool list changed.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_ServerDiscoverResponse">ServerDiscoverResponse (io.yupiik.fusion.mcp.model.ServerDiscoverResponse) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>_meta</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.Metadata</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Optional free form metadata.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>cacheScope</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The scope the client may share this cache entry at.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>capabilities</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.ServerCapabilities</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+What this server can do.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>instructions</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+How the model should use this server.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>resultType</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+enum with potential values <code>complete</code>, <code>error</code>, <code>input_required</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The type of this result, see the {@code 2026-07-28} specification.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>serverInfo</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object of type <code>io.yupiik.fusion.mcp.model.InitializeResponse.ServerInfo</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Which server is answering.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>supportedVersions</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type <code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The MCP protocol versions this server supports for stateless requests.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>ttlMs</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+How long, in milliseconds, the client may cache this result.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_SubscriptionFilter">SubscriptionFilter (io.yupiik.fusion.mcp.model.SubscriptionFilter) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>promptsListChanged</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>boolean</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the client wants notifications/prompts/list_changed.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>resourceSubscriptions</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+array with items of type <code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>false</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The resource uris the client wants notifications/resources/updated for.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>resourcesListChanged</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>boolean</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the client wants notifications/resources/list_changed.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>toolsListChanged</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>boolean</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+Set when the client wants notifications/tools/list_changed.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ <div class="sect3">
+  <h4 id="io_yupiik_fusion_mcp_model_Task">Task (io.yupiik.fusion.mcp.model.Task) schema</h4>
+ <div class="sectionbody">
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 16%;">
+   <col style="width: 50%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Name    </th>
+    <th class="tableblock halign-left">
+Type    </th>
+    <th class="tableblock halign-left">
+Nullable    </th>
+    <th class="tableblock halign-left">
+Description    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>createdAt</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+When the task was created, epoch milliseconds.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>error</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The error, when the task failed.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>inputRequests</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The requests the client must answer when the task needs input.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>lastUpdatedAt</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+When the task last changed, epoch milliseconds.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>parentTaskId</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The identifier of the parent task, if any.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>pollIntervalMs</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+How often, in milliseconds, the client should poll the task.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>result</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+object</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The final content, when the task completed.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>status</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+enum with potential values <code>working</code>, <code>input_required</code>, <code>completed</code>, <code>failed</code>, <code>cancelled</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The current status of the task.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>statusMessage</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+A human-readable note about the current progress.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>taskId</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>string</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+The unique, durable identifier of the task.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>ttlMs</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+integer</p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>true</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+How long, in milliseconds, the server keeps the task alive.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+                
+                <nav class="page-footer-nav" aria-label="Docs pages">
+    <a href="index.html" class="page-footer-nav-link-prev">
+    <div>Previous</div>
+    <div>Internals</div>
+</a>
+    <a href="testing.html" class="page-footer-nav-link-next">
+    <div>Next</div>
+    <div>Testing</div>
+</a>
+</nav>
+            </div>
+        </div>
+<div class="page-navigation-right">
+        <h3>Navigation</h3>
+        <nav class="generated-nav-menu"></nav>
+    </div>
+    </div>
+<footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-social">
+                <ul class="social-list">
+                <li class="list-inline-item"><a title="Github" target="_blank"
+                            href="https://www.github.com/yupiik/fusion-mcp-server"><i class="fab fa-github
+                            fa-fw"></i></a></li>
+                </ul>
+            </div>
+            <nav class="footer-bar"><small class="copyright">© 2026 <strong><a href="https://www.yupiik.com">Yupiik</a></strong>.
+                        All Rights Reserved</small><a class="legal-link" href="https://www.yupiik.com/terms-of-use/">Terms of use</a><a class="legal-link" href="https://www.yupiik.com/privacy-policy/">Privacy policy</a></nav>
+        </div>
+    </footer>
+
+    <div class="modal" id="searchModal" role="dialog" aria-label="Search site">
+    <div class="modal-overlay" data-close-modal></div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-header">
+            <h5 class="modal-title">Search</h5>
+            <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input class="form-control" id="searchInput" placeholder="Search the docs..." autocomplete="off">
+            <div class="search-hits"></div>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/highlight.min.js" integrity="sha384-pZ4gLQJIEk/VKnGk59xUSQK8Ne/erZQR9cpnPXPLB9iN1tXsVkRVfHYGdFYrSkv1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/bash.min.js" integrity="sha384-efs9Q+5nnPiBO0WMrHtZ2b4ZbGnY0xWwGyXD6wEdpsx5FloMqm1cIVIKG1Bdvg40" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/json.min.js" integrity="sha384-NnOc9XV+udt/++RdhhzykFpOtc2D05945J+tYJKxgDKzBhgT/v7WDgIYAfP5LaSa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/dockerfile.min.js" integrity="sha384-0zNCDFuDropscQQX105Gh/3QcoGRmz/FNUFCljVEETiDYRYMhSEyRydgyjQTlgds" crossorigin="anonymous"></script>
+    <script>if (!(window.minisite || {}).skipHighlightJs) {
+        document.querySelectorAll('.page-content-body pre code').forEach(function (codeBlock) {
+            hljs.highlightElement(codeBlock);
+        });
+        function addCopyButtons(clipboard) {
+          document.querySelectorAll('.page-content-body pre').forEach(function (codeBlock) {
+            var button = document.createElement('button');
+            button.className = 'copy-code-button';
+            button.type = 'button';
+            button.setAttribute('aria-label', 'Copy code to clipboard');
+            button.innerHTML = '<svg class="copy-glyph" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"></rect><path d="M10.5 5.5v-1A2 2 0 0 0 8.5 2.5h-5A2 2 0 0 0 1.5 4.5v5a2 2 0 0 0 2 2h1"></path></svg>' +
+                '<svg class="copy-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5"></path></svg>';
+            button.addEventListener('click', function () {
+              clipboard.writeText(codeBlock.querySelector('code') ? codeBlock.querySelector('code').innerText : codeBlock.innerText).then(function () {
+                button.classList.add('is-copied');
+                button.blur();
+                setTimeout(function () { button.classList.remove('is-copied'); }, 2000);
+              }, function () {
+                button.classList.add('is-copied');
+                button.querySelector('.copy-check').style.stroke = 'var(--brand-purple)';
+              });
+            });
+            codeBlock.appendChild(button);
+          });
+        }
+        if (navigator && navigator.clipboard) {
+         addCopyButtons(navigator.clipboard);
+        } else {
+         var script = document.createElement('script');
+         script.src = '//cdnjs.cloudflare.com/ajax/libs/clipboard-polyfill/2.7.0/clipboard-polyfill.promise.js';
+         script.integrity = 'sha256-waClS2re9NUbXRsryKoof+F9qc1gjjIhc2eT7ZbIv94=';
+         script.crossOrigin = 'anonymous';
+         script.onload = function() {addCopyButtons(clipboard);};
+         document.body.appendChild(script);
+        }
+    }</script>
+    <script src="//yupiik.github.io/fusion-mcp-server/js/minisite.js?v=1.0.3-SNAPSHOT"></script>
+    <script>$('.page-content-body').generatedNavMenu();</script>
+    
+    
+
+<script>
+    (function () {
+        // theme toggle
+        var root = document.documentElement;
+        var toggle = document.getElementById('theme-toggle');
+        if (toggle) {
+            function currentDark() {
+                var stored = root.getAttribute('data-theme');
+                if (stored === 'light' || stored === 'dark') return stored === 'dark';
+                // no explicit attribute yet: follow the OS preference
+                return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+            toggle.addEventListener('click', function () {
+                var next = currentDark() ? 'light' : 'dark';
+                root.setAttribute('data-theme', next);
+                try { localStorage.setItem('yupiik-theme', next); } catch (e) {}
+            });
+        }
+        // search modal
+        var modal = document.getElementById('searchModal');
+        function openModal() { if (modal) modal.classList.add('open'); }
+        function closeModal() { if (modal) modal.classList.remove('open'); }
+        var sb = document.getElementById('search-button');
+        if (sb) sb.addEventListener('click', function (e) { e.preventDefault(); openModal(); });
+        if (modal) {
+            modal.addEventListener('click', function (e) { if (e.target.closest('[data-close-modal]')) closeModal(); });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+        }
+    })();
+</script>
+</body>
+</html>

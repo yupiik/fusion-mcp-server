@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Conformance</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Expose a Yupiik Fusion application to any MCP client - tools are plain JSON-RPC
+                        methods.">
+    <meta name="author" content="Yupiik Minisite Generator">
+    <meta name="generator" content="Yupiik Minisite Generator">
+    
+    <link rel="shortcut icon" href="//yupiik.github.io/fusion-mcp-server/images/favicon.png">
+    <meta name="theme-color" content="#191b20" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#191b20" media="(prefers-color-scheme: light)">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="//yupiik.github.io/fusion-mcp-server/css/syntax-highlighting.css?v=1.0.3-SNAPSHOT">
+    <link id="theme-style" rel="stylesheet" href="//yupiik.github.io/fusion-mcp-server/css/theme.css?v=1.0.3-SNAPSHOT">
+    
+    
+<script>/* inline to avoid flicker */try{var t=localStorage.getItem('yupiik-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}</script>
+</head>
+<body>
+<header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <a class="brand-link" title="Home" href="//yupiik.github.io/fusion-mcp-server/index.html">
+                    <img class="brand-logo" src="//yupiik.github.io/fusion-mcp-server/images/logo.svg" alt="logo">
+                    <span class="brand-text">Fusion MCP Server<span class="brand-side">Documentation</span></span>
+                </a>
+            </div>
+            <div class="header-actions">
+                
+                <button class="icon-btn" id="search-button" type="button" title="Search" aria-label="Search">
+        <i class="fas fa-search" aria-hidden="true"></i>
+    </button>
+                
+				<ul class="social-list">
+				<li class="list-inline-item"><a title="Github" target="_blank"
+                            href="https://www.github.com/yupiik/fusion-mcp-server"><i class="fab fa-github
+                            fa-fw"></i></a></li>
+				</ul>
+				<button class="icon-btn" id="theme-toggle" type="button" title="Toggle theme" aria-label="Toggle theme">
+					<svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm0-16a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM6.34 4.93a1 1 0 1 1 1.41 1.41 1 1 0 0 1-1.41-1.41zm11.32 12.73a1 1 0 1 1 1.41 1.41 1 1 0 0 1-1.41-1.41zM4 11a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm16 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM4.93 17.66a1 1 0 1 1 1.41-1.41 1 1 0 0 1-1.41 1.41zm12.73-11.32a1 1 0 1 1 1.41-1.41 1 1 0 0 1-1.41 1.41z"/></svg>
+					<svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+				</button>
+            </div>
+        </div>
+    </header>
+	<div class="page">
+<div class="page-navigation-left">
+    <h3 class="menu-label">Menu</h3>
+    <ul>
+<li>
+    <a title="Fusion MCP Server" href="//yupiik.github.io/fusion-mcp-server/index.html">
+        <i class="fas fa-play"></i>Overview
+    </a>
+</li><li>
+    <a title="MCP" href="//yupiik.github.io/fusion-mcp-server/mcp/index.html">
+        <i class="fas fa-wrench"></i>MCP
+    </a>
+</li><li>
+    <a title="Deployment" href="//yupiik.github.io/fusion-mcp-server/deployment/index.html">
+        <i class="fas fa-server"></i>Deployment
+    </a>
+</li><li>
+    <a title="Internals" href="//yupiik.github.io/fusion-mcp-server/internals/index.html">
+        <i class="fas fa-sitemap"></i>Internals
+    </a>
+</li>
+    </ul>
+</div>
+<div id="deployment-conformance-html-container" class="container page-content deployment-conformance-html ">
+            <div class="page-header">
+                <h1>Conformance</h1>
+            </div>
+            <div class="page-content-body">
+                <div id="preamble">
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>Validates this implementation against the official  <a href="https://github.com/modelcontextprotocol/conformance[Model">https://github.com/modelcontextprotocol/conformance[Model</a>
+ Context Protocol conformance suite], both the stateless <code>2026-07-28</code> protocol and the legacy <code>2025-11-25</code> one.</p>
+ </div>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>The <code>conformance</code> module boots a runnable server - <code> <a href="http://localhost:8080/mcp" class="inline-code">http://localhost:8080/mcp</a>
+</code> - exposing a representative set of features the suite drives by name:</p>
+ </div>
+ <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p>tools: plain text, erroring, content blocks (image, audio, embedded resource, several at once), one reporting <code>notifications/progress</code>, one exercising the implicit JSON-Schema 2020-12 input conversion (<code>json_schema_2020_12_tool</code>), one receiving its message through an <code>Mcp-Param-*</code> header (<code>test_x_mcp_header</code>), and the MRTR ones returning <code>input_required</code> (elicitation, sampling, roots, tampered and multi-round <code>requestState</code>);</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p>a prompt (<code>test_simple_prompt</code>, <code>test_prompt_with_arguments</code>, ...), resources and resource templates, argument completion, and a long-running tool (<code>long/running</code>) returning an <code>io.modelcontextprotocol/tasks</code> handle the suite polls with <code>tasks/get</code>/<code>tasks/update</code>/<code>tasks/cancel</code>.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ <div class="paragraph">
+ <p>
+Beyond the spec methods it also exposes SEP-2575 diagnostic tools the suite drives by name:
+ </p>
+ </div>
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 40%;">
+   <col style="width: 60%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+Tool    </th>
+    <th class="tableblock halign-left">
+What it checks    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>test_missing_capability</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+requires the <code>sampling</code> client capability, a client which did not declare it gets the <code>-32021</code> <code>MissingRequiredClientCapabilityError</code> with <code>data.requiredCapabilities</code>.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>test_streaming_elicitation</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+echoes whether the client declared the <code>streaming_elicitation</code> capability.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>test_logging_tool</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+a plain tool which sends no logging records.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>test_trigger_tool_change</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+pushes <code>notifications/tools/list_changed</code> to the client.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>test_trigger_prompt_change</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+pushes <code>notifications/prompts/list_changed</code> to the client.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ <div class="paragraph">
+ <p>On the stateless protocol the stream <code>subscriptions/listen</code> acknowledges its commitment with a <code>notifications/subscriptions/acknowledged</code> notification, and <code>server/discover</code> carries the server identity both top-level and in <code>_meta.io.modelcontextprotocol/serverInfo</code>.</p>
+ </div>
+ <div class="sect1">
+  <h2 id="_run_the_server">Run the server</h2>
+ <div class="sectionbody">
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mvn package -pl conformance exec:exec
+</code></pre>
+ </div>
+ </div>
+ <div class="paragraph">
+ <p>The <code>conformance</code> server is the one the suite is validated against: it exposes every tool the checks drive by name. The <code>demo</code> module (<code>mvn package -pl demo exec:exec</code>) is a smaller, human-friendly example of the same server stack - same route, both eras - but without the suite's diagnostic tools, so it is not a target for the suite.</p>
+ </div>
+ <div class="paragraph">
+ <p>The server listens on <code> <a href="http://localhost:8080/mcp" class="inline-code">http://localhost:8080/mcp</a>
+</code>, serving both eras on the same route: a client sending the stateless per-request <code>_meta.io.modelcontextprotocol/protocolVersion</code> - served statelessly - and a client doing an <code>initialize</code> handshake.</p>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_run_the_suite">Run the suite</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Start the server in one terminal, then in another:
+ </p>
+ </div>
+ <div class="listingblock">
+ <div class="content">
+ <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">npx @modelcontextprotocol/conformance server \
+  --url http://localhost:8080/mcp \
+  --spec-version 2026-07-28 \
+  --suite all \
+  --verbose
+</code></pre>
+ </div>
+ </div>
+ <div class="admonitionblock note">
+  <table>
+    <tbody>
+     <tr>
+      <td class="icon">
+     <div class="title">NOTE</div>
+       </td>
+      <td class="content">
+ <div class="paragraph">
+ <p>as of 2026-08-09 the latest MCP release (the stateless <code>2026-07-28</code> protocol) requires the <strong>alpha</strong> of the conformance runner, not the stable <code>@modelcontextprotocol/conformance</code> package - run <code>npx @modelcontextprotocol/conformance@0.2.0-alpha.9 server --url http://localhost:8080/mcp --spec-version 2026-07-28 --suite all --verbose</code> to validate the stateless protocol. Pin that version to keep the run reproducible; it is the one this project is validated against. Newer alphas exist (<code>0.2.0-alpha.11</code> at the time of writing) - bump the pin only after a clean run, and keep it explicit.</p>
+ </div>
+    </td>
+   </tr>
+      </tbody>
+  </table>
+ </div>
+ <div class="paragraph">
+ <p>The conformance runner is a stateless client, so it probes the server with <code>server/discover</code> and drives every method with the negotiated version. <code>--spec-version</code> selects the protocol revision the runner talks:</p>
+ </div>
+ <table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+   <col style="width: 25%;">
+   <col style="width: 75%;">
+  </colgroup>
+  <thead>
+   <tr>
+    <th class="tableblock halign-left">
+--spec-version    </th>
+    <th class="tableblock halign-left">
+What is validated    </th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>2026-07-28</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the stateless protocol: required <code>_meta</code>, MRTR, <code>tasks</code>, <code>extensions</code> negotiation.</p>
+    </td>
+   </tr>
+   <tr>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+<code>2025-11-25</code></p>
+    </td>
+    <td class="tableblock halign-left">
+<p class="tableblock">
+the legacy handshake and session-backed protocol.</p>
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ <div class="admonitionblock tip">
+  <table>
+    <tbody>
+     <tr>
+      <td class="icon">
+     <div class="title">TIP</div>
+       </td>
+      <td class="content">
+ <div class="paragraph">
+ <p>pass <code>--suite all</code> to run every suite (lifecycle, tools, prompts, resources, sampling, elicitation, roots, completion, logging, subscriptions) and <code>--verbose</code> to see each check. Use <code>--suite tools</code> for a single area.</p>
+ </div>
+    </td>
+   </tr>
+      </tbody>
+  </table>
+ </div>
+ </div>
+ </div>
+ <div class="sect1">
+  <h2 id="_what_to_look_at_on_a_failure">What to look at on a failure</h2>
+ <div class="sectionbody">
+ <div class="paragraph">
+ <p>
+Most of the new feature surface is driven here, so a failure usually points at a specific area:
+ </p>
+ </div>
+ <div class="ulist">
+ <ul>
+  <li>
+ <div class="paragraph">
+ <p><code>_meta</code>/version: a failing <code>server/discover</code>, <code>tools/*</code> or <code>prompts/*</code> check on the stateless path means the <code>2026-07-28</code> envelope diverges - required namespaced <code>_meta</code> (see  <a href="transport.html">Transport</a>
+) - while a failing legacy <code>initialize</code>/session check means the <code>2025-11-25</code> handshake path diverges (see  <a href="configuration.html">Configuration</a>
+).</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>dns-rebinding-protection</code>: the server must accept a <strong>legacy</strong> <code>initialize</code> even when the runner adds an <code>Mcp-Method</code>  header to a legacy request - the explicit <code>MCP-Protocol-Version</code> header (a legacy version) must win over the <code>Mcp-Method</code> heuristic, and <code>Host</code>/<code>Origin</code> loopback validation must answer <code>403</code> for a non-loopback host (see  <a href="transport.html">Transport</a>
+).</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>tools-call-with-progress</code>: the suite sends the progress token as the <strong>bare</strong> <code>_meta.progressToken</code> key (the MCP way), not the <code>io.modelcontextprotocol/progressToken</code> one - a server that only reads the namespaced key echoes <code>progressToken: &quot;null&quot;</code> and the check reports <strong>No progress notifications received</strong>.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>tools-call-with-logging</code>, <code>tools-call-sampling</code>, <code>tools-call-elicitation</code>, <code>elicitation-sep1034-defaults</code>, <code>elicitation-sep1330-enums</code>: these drive tools by name (<code>test_tool_with_logging</code>, <code>test_sampling</code>, <code>test_elicitation</code>, ...). A <code>-32602 Unknown tool '...'</code> means the conformance server does not expose them; sampling/elicitation must also work server to client over the session SSE stream.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p><code>json-schema-2020-12</code>: the input schemas must survive <code>tools/list</code> with the 2020-12 vocabulary (<code>$defs</code>, <code>$ref</code>, <code>enum</code>, <code>const</code>, <code>if</code>/<code>then</code>/<code>else</code>, <code>additionalProperties</code>) intact - see <code>DescriptorService</code>.</p>
+ </div>
+  </li>
+  <li>
+ <div class="paragraph">
+ <p>the conformance module pins <code>fusion.mcp.requestStateSecret</code> so the MRTR <code>requestState</code> integrity checks run as they would in production.</p>
+ </div>
+  </li>
+ </ul>
+ </div>
+ </div>
+ </div>
+                
+                <nav class="page-footer-nav" aria-label="Docs pages">
+    <a href="clients.html" class="page-footer-nav-link-prev">
+    <div>Previous</div>
+    <div>Clients</div>
+</a>
+    <a href="../internals/index.html" class="page-footer-nav-link-next">
+    <div>Next</div>
+    <div>Internals</div>
+</a>
+</nav>
+            </div>
+        </div>
+<div class="page-navigation-right">
+        <h3>Navigation</h3>
+        <nav class="generated-nav-menu"></nav>
+    </div>
+    </div>
+<footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-social">
+                <ul class="social-list">
+                <li class="list-inline-item"><a title="Github" target="_blank"
+                            href="https://www.github.com/yupiik/fusion-mcp-server"><i class="fab fa-github
+                            fa-fw"></i></a></li>
+                </ul>
+            </div>
+            <nav class="footer-bar"><small class="copyright">© 2026 <strong><a href="https://www.yupiik.com">Yupiik</a></strong>.
+                        All Rights Reserved</small><a class="legal-link" href="https://www.yupiik.com/terms-of-use/">Terms of use</a><a class="legal-link" href="https://www.yupiik.com/privacy-policy/">Privacy policy</a></nav>
+        </div>
+    </footer>
+
+    <div class="modal" id="searchModal" role="dialog" aria-label="Search site">
+    <div class="modal-overlay" data-close-modal></div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-header">
+            <h5 class="modal-title">Search</h5>
+            <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input class="form-control" id="searchInput" placeholder="Search the docs..." autocomplete="off">
+            <div class="search-hits"></div>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/highlight.min.js" integrity="sha384-pZ4gLQJIEk/VKnGk59xUSQK8Ne/erZQR9cpnPXPLB9iN1tXsVkRVfHYGdFYrSkv1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/bash.min.js" integrity="sha384-efs9Q+5nnPiBO0WMrHtZ2b4ZbGnY0xWwGyXD6wEdpsx5FloMqm1cIVIKG1Bdvg40" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/json.min.js" integrity="sha384-NnOc9XV+udt/++RdhhzykFpOtc2D05945J+tYJKxgDKzBhgT/v7WDgIYAfP5LaSa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.11.2/languages/dockerfile.min.js" integrity="sha384-0zNCDFuDropscQQX105Gh/3QcoGRmz/FNUFCljVEETiDYRYMhSEyRydgyjQTlgds" crossorigin="anonymous"></script>
+    <script>if (!(window.minisite || {}).skipHighlightJs) {
+        document.querySelectorAll('.page-content-body pre code').forEach(function (codeBlock) {
+            hljs.highlightElement(codeBlock);
+        });
+        function addCopyButtons(clipboard) {
+          document.querySelectorAll('.page-content-body pre').forEach(function (codeBlock) {
+            var button = document.createElement('button');
+            button.className = 'copy-code-button';
+            button.type = 'button';
+            button.setAttribute('aria-label', 'Copy code to clipboard');
+            button.innerHTML = '<svg class="copy-glyph" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"></rect><path d="M10.5 5.5v-1A2 2 0 0 0 8.5 2.5h-5A2 2 0 0 0 1.5 4.5v5a2 2 0 0 0 2 2h1"></path></svg>' +
+                '<svg class="copy-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5"></path></svg>';
+            button.addEventListener('click', function () {
+              clipboard.writeText(codeBlock.querySelector('code') ? codeBlock.querySelector('code').innerText : codeBlock.innerText).then(function () {
+                button.classList.add('is-copied');
+                button.blur();
+                setTimeout(function () { button.classList.remove('is-copied'); }, 2000);
+              }, function () {
+                button.classList.add('is-copied');
+                button.querySelector('.copy-check').style.stroke = 'var(--brand-purple)';
+              });
+            });
+            codeBlock.appendChild(button);
+          });
+        }
+        if (navigator && navigator.clipboard) {
+         addCopyButtons(navigator.clipboard);
+        } else {
+         var script = document.createElement('script');
+         script.src = '//cdnjs.cloudflare.com/ajax/libs/clipboard-polyfill/2.7.0/clipboard-polyfill.promise.js';
+         script.integrity = 'sha256-waClS2re9NUbXRsryKoof+F9qc1gjjIhc2eT7ZbIv94=';
+         script.crossOrigin = 'anonymous';
+         script.onload = function() {addCopyButtons(clipboard);};
+         document.body.appendChild(script);
+        }
+    }</script>
+    <script src="//yupiik.github.io/fusion-mcp-server/js/minisite.js?v=1.0.3-SNAPSHOT"></script>
+    <script>$('.page-content-body').generatedNavMenu();</script>
+    
+    
+
+<script>
+    (function () {
+        // theme toggle
+        var root = document.documentElement;
+        var toggle = document.getElementById('theme-toggle');
+        if (toggle) {
+            function currentDark() {
+                var stored = root.getAttribute('data-theme');
+                if (stored === 'light' || stored === 'dark') return stored === 'dark';
+                // no explicit attribute yet: follow the OS preference
+                return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+            toggle.addEventListener('click', function () {
+                var next = currentDark() ? 'light' : 'dark';
+                root.setAttribute('data-theme', next);
+                try { localStorage.setItem('yupiik-theme', next); } catch (e) {}
+            });
+        }
+        // search modal
+        var modal = document.getElementById('searchModal');
+        function openModal() { if (modal) modal.classList.add('open'); }
+        function closeModal() { if (modal) modal.classList.remove('open'); }
+        var sb = document.getElementById('search-button');
+        if (sb) sb.addEventListener('click', function (e) { e.preventDefault(); openModal(); });
+        if (modal) {
+            modal.addEventListener('click', function (e) { if (e.target.closest('[data-close-modal]')) closeModal(); });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+        }
+    })();
+</script>
+</body>
+</html>
